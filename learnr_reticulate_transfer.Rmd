@@ -198,15 +198,80 @@ You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dat
 
 ```
 
-
 ## How do I filter data?
 
+### Filter with conditions {.tabset .tabset-fade}
 
+Suppose we want to filter mtcars such that we only look at 6 or more **cyl** (cylinders).
 
+#### In Python
+
+Filtering dataframes can be achieved by placing a boolean expression in a subset expression using `[` 
+
+```{python echo = TRUE, eval = FALSE}
+mtcars[mtcars.cyl > 4]
+``` 
+
+```{python py-filter}
+print(mtcars.cyl[mtcars.cyl > 4])
+```
+
+#### In R
+
+Try the same expression except using `$` to reference a column and observe what happens:
+```{r filter-wrong, exercise = TRUE, exercise.eval = TRUE, exercise.lines = 1}
+
+```
+
+```{r filter-wrong-hint, include = FALSE}
+mtcars[mtcars$col_name > 4]
+```
+
+The problem here is that R subsets columns by default, so R evaluates the condition it produces the following:
+```{r}
+mtcars$cyl > 4
+```
+
+A logical vector which exceeds the number of columns we have available, which leads us to the error above.
+
+To filter for rows, you have to specify the columns in addition to the rows when filtering: 
+
+```{r echo = TRUE, eval = FALSE}
+df[row_index, col_index]
+``` 
+
+where a blank index signifies all rows or columns. Go ahead and fix the code and enter the correct expression below:
+
+```{r filter, exercise = TRUE, exercise.lines = 1}
+
+```
+
+```{r filter-hint}
+"The problematic code just needs one additional character for the fix."
+```
+
+```{r filter-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, mtcars[mtcars$cyl > 4, ]), "Remember to watch out for that comma!")
+)
+```
 
 ## Enter Tidy R
 
-Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions:
+Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. These include operators `[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.
+
+
+- TODO: insert example of [ messing up with NA examples
+- TODO: insert example of [ messing up with NA padding for out of bound ranges
+- TODO: insert example of functions like head messing up with NA padding for out of bound ranges
+
+
+The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions:
 
 - `filter`: choose observations (rows) by value(s)
+- `arrange`: reorder rows
+- `select`: choose variables (columns) by name
+- `mutate`: derive new variables from existing ones
+- `group_by`: define subsets of rows for further processing
+- `summarize`: combine many values to create a single new value
 
