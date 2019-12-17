@@ -1,0 +1,212 @@
+---
+title: "Python to R: Dataframes"
+author: Nischal Shrestha
+output: 
+  learnr::tutorial:
+    fig_caption: no
+    progressive: yes
+    allow_skip: true
+    toc: true
+    toc_depth: 2
+    toc_float: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+# first, some packages for interactive tutorial, polyglot environment and tidyverse
+library(learnr)
+library(gradethis)
+library(reticulate)
+library(tidyverse)
+library(rlang)
+library(knitr)
+# code checking
+tutorial_options(exercise.timelimit = 60, exercise.checker = gradethis::grade_learnr)
+opts_chunk$set(echo = FALSE)
+opts_chunk$set(comment = NA)
+```
+
+## Introduction
+
+In this (very) short guide, we're going to cover some key concepts in R by relating it to the language you are comfortable with, Python. Think of this as an interactive tutorial document, where we are going to make use of a lot of "learning by doing" and letting you execute and play with code to reinforce the concepts. We shall use the **mtcars** dataset available in R throughout the tutorial.
+
+## How do I inspect data?
+
+### Print first few rows {.tabset .tabset-fade}
+
+Let's go over how to inspect a dataframe:
+
+```{r}
+head(mtcars) %>% kable
+```
+
+#### In Python
+
+```{python include = F}
+# set a python variable to point to mtcars
+mtcars = r.mtcars
+```
+
+You are used to printing the first few rows using `head()`
+
+```{python echo = TRUE, eval = FALSE}
+mtcars.head()
+```
+
+```{python py-head}
+print(mtcars.head())
+```
+
+#### In R
+
+An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
+
+```{r head, exercise = TRUE, exercise.lines = 1}
+
+```
+
+```{r head-hint}
+"Python calls a method on the dataframe object, whereas R passes the dataframe object to the function"
+```
+
+```{r head-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, head(mtcars)), "Great job!")
+)
+# grade_code("Great job!")
+```
+
+
+### Print last few rows {.tabset .tabset-fade}
+
+#### In Python
+
+You are used to printing the last few rows using `tail()`. 
+
+```{python echo = TRUE, eval = FALSE}
+mtcars.tail()
+```
+
+```{python py-tail}
+print(mtcars.tail())
+```
+
+#### In R
+
+An equivalent `tail()` function exists in R. Try print the last few rows of **mtcars** in R:
+
+```{r tail, exercise=TRUE, exercise.lines = 1, message=FALSE}
+
+```
+
+```{r tail-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, tail(mtcars)), "Great job!")
+)
+```
+
+## How do I index rows and columns?
+
+### Index columns {.tabset .tabset-fade}
+
+#### In Python
+
+You indexed a column using either `[` or dot notation.
+
+Both `mtcars['mpg']` and `mtcars.mpg` references the **mpg** column.
+
+```{python eval=FALSE}
+mtcars['mpg']
+```
+
+```{python py-column-indexing-2}
+print(mtcars['mpg'])
+```
+
+#### In R
+You can use the `[` as well. Try it out now by referencing the **mpg** column:
+
+```{r column, exercise = TRUE, exercise.lines = 1}
+
+```
+
+```{r column-hint}
+mtcars[col_name]
+```
+
+```{r column-check}
+grade_result(
+  pass_if(~ identical(.result, mtcars['mpg']), "Easy enough!"),
+  fail_if(~ identical(.result, mtcars$mpg), "Using $ is fine but doesn't return a dataframe as explained in the next exercise.")
+)
+```
+
+
+But, what happens if you use the `.` notation to reference a column? Try that now in R:
+
+```{r column-indexing-2-wrong,  exercise = TRUE, exercise.lines = 1}
+
+```
+
+Since `.` can be included in a variable name, R thinks you are trying to refer to a variable. The `.` cannot be used to reference a column as you would expect coming from Python.
+
+Instead use `$`:
+```{r column-indexing-2,  exercise = TRUE, exercise.lines = 1}
+
+```
+
+```{r column-indexing-2-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, mtcars$mpg), "Use $ when you need to reference a column.")
+)
+```
+
+### Index element {.tabset .tabset-fade}
+
+Here's how we would access single elements.
+
+#### In Python
+
+You use `[` on the dataframe to reference the **mpg** column then `[` again to access the fifth item:
+
+```{python echo = TRUE, eval = FALSE}
+mtcars['mpg'][4]
+``` 
+
+```{python py-single}
+print(mtcars['mpg'][4])
+```
+
+**Note** how Python is 0-indexed.
+
+#### In R
+We instead use `$` and switch to 1-indexing. Try it out!
+
+```{r single, exercise = TRUE, exercise.lines = 1}
+
+```
+
+```{r single-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, mtcars$mpg[5]), "Pretty easy right?")
+)
+```
+
+You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
+
+```{r single-check-wrong, exercise = TRUE, exercise.lines = 1, exercise.eval = TRUE}
+
+```
+
+
+## How do I filter data?
+
+
+
+
+## Enter Tidy R
+
+Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions:
+
+- `filter`: choose observations (rows) by value(s)
+
