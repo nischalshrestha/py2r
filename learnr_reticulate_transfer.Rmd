@@ -26,6 +26,20 @@ opts_chunk$set(echo = FALSE)
 opts_chunk$set(comment = NA)
 ```
 
+```{python include = FALSE, context="data"}
+# set a python variable to point to mtcars
+mtcars = r.mtcars
+```
+
+```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
+# data <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
+```
+
+```{python include=FALSE, context="data"}
+df = r.df
+```
+
 ## Introduction
 
 In this (very) short guide, we're going to cover some key concepts using dataframes in R by relating it to the language you are comfortable with, Python. Think of this as an interactive tutorial document, where you are going to read some text but most importantly, you are going to make use of a lot of "learning by doing" and play with code to reinforce the concepts. We shall use the **mtcars** dataset available in R throughout the tutorial.
@@ -42,11 +56,6 @@ head(mtcars) %>% kable
 
 #### In Python
 
-```{python include = F}
-# set a python variable to point to mtcars
-mtcars = r.mtcars
-```
-
 You are used to printing the first few rows using `head()`
 
 ```{python echo = TRUE, eval = FALSE}
@@ -61,7 +70,7 @@ print(mtcars.head())
 
 An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
 
-```{r head, exercise = TRUE, exercise.lines = 1}
+```{r head, exercise = TRUE, exercise.lines = 3}
 
 ```
 
@@ -93,7 +102,7 @@ print(mtcars.tail())
 
 An equivalent `tail()` function exists in R. Try printing the last few rows of **mtcars** in R:
 
-```{r tail, exercise=TRUE, exercise.lines = 1, message=FALSE}
+```{r tail, exercise=TRUE, exercise.lines = 3, message=FALSE}
 
 ```
 
@@ -126,7 +135,7 @@ print(mtcars['mpg'])
 #### In R
 You can use the `[` as well. Try it out now by referencing the **mpg** column:
 
-```{r column, exercise = TRUE, exercise.lines = 1}
+```{r column, exercise = TRUE, exercise.lines = 3}
 
 ```
 
@@ -144,14 +153,14 @@ grade_result(
 
 But, what happens if you use the `.` notation to reference a column? Try that now in R:
 
-```{r column-indexing-2-wrong,  exercise = TRUE, exercise.lines = 1}
+```{r column-indexing-2-wrong,  exercise = TRUE, exercise.lines = 3}
 
 ```
 
 Since `.` can be included in a variable name, R thinks you are trying to reference a variable. The `.` cannot be used to reference a column as you would expect coming from Python.
 
 Instead use `$`:
-```{r column-indexing-2,  exercise = TRUE, exercise.lines = 1}
+```{r column-indexing-2,  exercise = TRUE, exercise.lines = 3}
 
 ```
 
@@ -181,7 +190,7 @@ print(mtcars['mpg'][4])
 #### In R
 We instead use `$` to reference **mpg**, then use `[` like Python for accessing the element. Try it out!
 
-```{r single, exercise = TRUE, exercise.lines = 1}
+```{r single, exercise = TRUE, exercise.lines = 3}
 
 ```
 
@@ -197,7 +206,7 @@ grade_result(
 
 You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
 
-```{r single-check-wrong, exercise = TRUE, exercise.lines = 1, exercise.eval = TRUE}
+```{r single-check-wrong, exercise = TRUE, exercise.lines = 3, exercise.eval = TRUE}
 
 ```
 
@@ -221,7 +230,7 @@ print(mtcars.cyl[mtcars.cyl > 4])
 #### In R
 
 Try the same expression except using `$` to reference a column and observe what happens:
-```{r filter-wrong, exercise = TRUE, exercise.eval = TRUE, exercise.lines = 1}
+```{r filter-wrong, exercise = TRUE, exercise.eval = TRUE, exercise.lines = 3}
 
 ```
 
@@ -244,7 +253,7 @@ df[row_index, col_index]
 
 where a blank index signifies all rows or columns. Go ahead and fix the code and enter the correct expression below:
 
-```{r filter, exercise = TRUE, exercise.lines = 1}
+```{r filter, exercise = TRUE, exercise.lines = 3}
 
 ```
 
@@ -279,10 +288,6 @@ The tidyverse is a collection of packages that is designed to handle operations 
 
 If we used the `[` in R, it can behave in inconsistent ways. For example let's work with the dataframe below called `df` which has some missing values:
 
-```{r bracket-df, eval=TRUE, include=FALSE}
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
-```
-
 ```{r}
 df
 ```
@@ -293,10 +298,6 @@ Let's see what happens when we subset `df` with a range that clearly exceeds the
 
 #### In Python
 
-```{python include=FALSE}
-df = r.df
-```
-
 ```{python echo=TRUE}
 df[1:10]
 ```
@@ -305,8 +306,8 @@ df[1:10]
 
 Try the same operation in R (Remember that comma to select rows!)
 
-```{r subset_bad, exercise=TRUE, exercise.lines=1}
-df[1:10, ]
+```{r subset_bad, exercise=TRUE, exercise.lines = 3}
+
 ```
 
 You should see some extra rows full of missing values or `NA`s. What?! This is because of a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). Basically R likes to perform operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3 but we can get with:
@@ -319,13 +320,13 @@ But the range we specified to subset is `1:10`, a vector that is 10 elements lon
 
 Tinker with your code above and change the range so that it exceeds 3 and you'll see it pads as many rows as required. Sadly, our story does not end here with `[`
 
-Here's where our first tidy verb `slice` comes in handy, which behaves as you'd expect in Python. Try out `slice(data, start:end)` where `data` is your dataframe, `start:end` is a range for the rows you want from `df`. It should make you happy with the results:
-```{r slice, exercise=TRUE, exercise.lines=1}
+Here's where our first tidy verb `slice` comes in handy, which behaves as you'd expect in Python. Try out `slice(df, start:end)` where `df` is your dataframe, `start:end` is a range for the rows you want from `df`. It should make you happy with the results:
+```{r slice, exercise=TRUE, exercise.lines = 3}
 
 ```
 
 ```{r slice-hint, include=FALSE}
-slice(data, start:end)
+slice(df, start:end)
 ```
 
 ## The problem with filtering in base R
@@ -356,19 +357,19 @@ df[df.b > 1]
 
 Try using `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
 
-```{r bracket_bad, exercise=TRUE, exercise.lines=1}
+```{r bracket_bad, exercise=TRUE, exercise.lines = 3}
 
 ```
 
 Now, try using `[` to filter `df` for rows where **b** is greater than 1:
 
-```{r bracket_bad-2, exercise=TRUE, exercise.lines=1}
+```{r bracket_bad-2, exercise=TRUE, exercise.lines = 3}
 
 ```
 
 If you don't see it yet, the issue for both of these operations is that they both kept rows with `NA` even though we wouldn't normally see them in Python.
 
-Now you will appreciate what `filter` does, our next tidy verb! The syntax for it is `filter(data, condition)` where the column in the condition does not need to be referenced from the data.
+Now you will appreciate what `filter` does, our next tidy verb! The syntax for it is `filter(df, condition)` where the column in the condition does not need to be referenced from the data.
 
 ```{r filter_good-example-1, echo=TRUE}
 filter(df, a > 1)
@@ -381,7 +382,7 @@ Notice how we don't run into any issues now even with `NA` in our dataframe, jus
 
 Try tinkering with `filter` yourself:
 
-```{r filter_good, exercise=TRUE, exercise.lines=1}
+```{r filter_good, exercise=TRUE, exercise.lines = 3}
 
 ```
 
