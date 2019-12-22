@@ -1,0 +1,41 @@
+---
+title: "Problem Slicing"
+output: html_document
+---
+
+### The problem with slicing rows using `[` {.tabset .tabset-fade}
+
+Let's see what happens when we subset `df` with a range that clearly exceeds the total number of rows.
+
+#### In Python
+
+```{python echo=TRUE}
+df[1:10]
+```
+
+#### In R
+
+Try the same operation in R (Remember that comma to select rows!)
+
+```{r subset_bad, exercise=TRUE, exercise.lines = 3}
+
+```
+
+You should see some extra rows full of missing values or `NA`s. What?! This is because of a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). Basically R likes to perform operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3 but we can get with:
+
+```{r echo=TRUE}
+nrow(df)
+```
+
+But the range we specified to subset is `1:10`, a vector that is 10 elements long. So R recycles the 3 until reaching the 10, but it will create rows with `NA` which makes sense because it has no idea what you want the values to be! But, this is certainly confusing coming from Python.
+
+Tinker with your code above and change the range so that it exceeds 3 and you'll see it pads as many rows as required. Sadly, our story does not end here with `[`
+
+Here's where our first tidy verb `slice` comes in handy, which behaves as you'd expect in Python. Try out `slice(df, start:end)` where `df` is your dataframe, `start:end` is a range for the rows you want from `df`. It should make you happy with the results:
+```{r slice, exercise=TRUE, exercise.lines = 3}
+
+```
+
+```{r slice-hint, include=FALSE}
+slice(df, start:end)
+```

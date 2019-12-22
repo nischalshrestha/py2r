@@ -1,0 +1,78 @@
+---
+title: "Inspection"
+output: html_document
+---
+
+```{python include = FALSE, context="data"}
+# set a python variable to point to mtcars
+mtcars = r.mtcars
+```
+
+## How do I inspect data?
+
+Let's go over how to inspect a dataframe such as *mtcars*:
+
+```{r}
+head(mtcars) %>% kable
+```
+
+### Print the first few rows {.tabset .tabset-fade}
+
+#### In Python
+
+You are used to printing the first few rows using `head()`
+
+```{python echo = TRUE, eval = FALSE}
+mtcars.head()
+```
+
+```{python py-head}
+print(mtcars.head())
+```
+
+#### In R
+
+An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
+
+```{r head, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r head-hint}
+"Python calls a method on the dataframe object, whereas R passes the dataframe object to the function"
+```
+
+```{r head-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, head(mtcars)), "Not bad huh?")
+)
+```
+
+### Print the last few rows {.tabset .tabset-fade}
+
+#### In Python
+
+You are used to printing the last few rows using `tail()`. 
+
+```{python echo = TRUE, eval = FALSE}
+mtcars.tail()
+```
+
+```{python py-tail}
+print(mtcars.tail())
+```
+
+#### In R
+
+An equivalent `tail()` function exists in R. Try printing the last few rows of **mtcars** in R:
+
+```{r tail, exercise=TRUE, exercise.lines = 3, message=FALSE}
+
+```
+
+```{r tail-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, tail(mtcars)), "Great job!")
+)
+```
+

@@ -1,0 +1,64 @@
+---
+title: "Filtering Data"
+output: html_document
+---
+
+## How do I filter data?
+
+### Filter with conditions {.tabset .tabset-fade}
+
+Suppose we want to filter mtcars for cars with more than 4 **cyl** (cylinders).
+
+#### In Python
+
+Filtering dataframes can be achieved by placing a boolean expression in a subset expression using `[` 
+```{python echo = TRUE, eval = FALSE}
+mtcars[mtcars.cyl > 4]
+``` 
+
+```{python py-filter}
+print(mtcars.cyl[mtcars.cyl > 4])
+```
+
+#### In R
+
+Try the same expression except using `$` to reference a column and observe what happens:
+```{r filter-wrong, exercise = TRUE, exercise.eval = TRUE, exercise.lines = 3}
+
+```
+
+```{r filter-wrong-hint, include = FALSE}
+mtcars[mtcars$col_name > 4]
+```
+
+The problem above is that R subsets columns by default, so R evaluates the condition it produces the following:
+```{r}
+mtcars$cyl > 4
+```
+
+A logical vector which exceeds the number of columns we have available, which leads us to the error above.
+
+To filter for rows, you have to specify the columns in addition to the rows when filtering: 
+
+```{r echo = TRUE, eval = FALSE}
+df[row_index, col_index]
+``` 
+
+where a blank index signifies all rows or columns. Go ahead and fix the code and enter the correct expression below:
+
+```{r filter, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r filter-hint-1}
+"The problematic code just needs one additional character for the fix."
+```
+```{r filter-hint-2}
+mtcars[row_index, ]
+```
+
+```{r filter-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, mtcars[mtcars$cyl > 4, ]), "Remember to watch out for that comma!")
+)
+```

@@ -1,0 +1,105 @@
+---
+title: "Indexing"
+output: html_document
+---
+
+## How do I index rows and columns?
+
+### Index columns {.tabset .tabset-fade}
+
+#### In Python
+
+You indexed a column using either `[` or dot notation.
+
+Both `mtcars['mpg']` and `mtcars.mpg` references the **mpg** column.
+
+```{python eval=FALSE}
+mtcars['mpg']
+```
+```{python eval=FALSE}
+mtcars['mpg']
+```
+```{python py-column-indexing}
+print(mtcars['mpg'])
+```
+
+#### In R
+You can use the `[` as well. Try it out now by referencing the **mpg** column:
+
+```{r column, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r column-hint}
+mtcars[col_name]
+```
+
+```{r column-check}
+grade_result(
+  pass_if(~ identical(.result, mtcars['mpg']), "Easy enough!"),
+  fail_if(~ identical(.result, mtcars$mpg), "Using $ is fine but doesn't return a dataframe as explained in the next exercise.")
+)
+```
+
+
+But, what happens if you use the `.` notation to reference a column? Try that now in R:
+
+```{r column-indexing-2-wrong,  exercise = TRUE, exercise.lines = 3}
+
+```
+
+Since `.` can be included in a variable name, R thinks you are trying to reference a variable. The `.` cannot be used to reference a column as you would expect coming from Python.
+
+Instead use `$`:
+```{r column-indexing-2,  exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r column-indexing-2-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, mtcars$mpg), "Use $ when you need to reference a column.")
+)
+```
+
+### Index element {.tabset .tabset-fade}
+
+Suppose we wanted to reference the fifth element of the **mpg** column.
+
+#### In Python
+You use `[` on the dataframe to reference the **mpg** column then `[` again to access the fifth item:
+
+```{python echo = TRUE, eval = FALSE}
+mtcars['mpg'][4]
+``` 
+
+```{python py-single}
+print(mtcars['mpg'][4])
+```
+
+**Note** how Python is 0-indexed.
+
+#### In R
+We instead use `$` to reference **mpg**, then use `[` like Python for accessing the element. Try it out!
+
+```{r single, exercise = TRUE, exercise.lines = 3}
+
+```
+
+```{r single-hint}
+"Remember that we start counting from 1 in R."
+```
+
+```{r single-check, include = FALSE}
+grade_result(
+  pass_if(~ identical(.result, mtcars$mpg[5]), "Pretty easy right?")
+)
+```
+
+You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
+
+```{r single-check-wrong, exercise = TRUE, exercise.lines = 3, exercise.eval = TRUE}
+
+
+```
+
+

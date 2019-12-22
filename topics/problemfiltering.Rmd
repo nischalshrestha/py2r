@@ -1,0 +1,63 @@
+---
+title: "Problem Filtering"
+output: html_document
+---
+
+## The problem with filtering in base R
+
+Now let's look at filtering with the same `df`:
+
+```{r}
+df
+```
+
+### The problem with filtering using `[` {.tabset .tabset-fade}
+
+#### In Python
+
+We can safely use `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
+
+```{python bracket_handled-1, echo=TRUE, eval=TRUE}
+df[df.a > 1]
+```
+
+and also where **b** is greater than 1:
+
+```{python bracket_handled-2, echo=TRUE, eval=TRUE}
+df[df.b > 1]
+```
+
+#### In R
+
+Try using `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
+
+```{r bracket_bad, exercise=TRUE, exercise.lines = 3}
+
+```
+
+Now, try using `[` to filter `df` for rows where **b** is greater than 1:
+
+```{r bracket_bad-2, exercise=TRUE, exercise.lines = 3}
+
+```
+
+If you don't see it yet, the issue for both of these operations is that they both kept rows with `NA` even though we wouldn't normally see them in Python.
+
+Now you will appreciate what `filter` does, our next tidy verb! The syntax for it is `filter(df, condition)` where the column in the condition does not need to be referenced from the data.
+
+```{r filter_good-example-1, echo=TRUE}
+filter(df, a > 1)
+```
+```{r filter_good-example-2, echo=TRUE}
+filter(df, b > 1)
+```
+
+Notice how we don't run into any issues now even with `NA` in our dataframe, just like Python. 
+
+Try tinkering with `filter` yourself:
+
+```{r filter_good, exercise=TRUE, exercise.lines = 3}
+
+```
+
+

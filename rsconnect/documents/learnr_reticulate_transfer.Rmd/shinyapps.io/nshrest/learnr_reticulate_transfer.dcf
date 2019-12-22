@@ -5,8 +5,9 @@ account: nshrest
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1607292
-bundleId: 2679721
+bundleId: 2686795
 url: https://nshrest.shinyapps.io/learnr_reticulate_transfer/
-when: 1576713701.89141
+when: 1577045467.00719
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: .RData

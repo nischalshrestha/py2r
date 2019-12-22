@@ -1,0 +1,34 @@
+---
+title: "Enter Tidy"
+output: html_document
+---
+
+```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
+```
+
+```{python include=FALSE, context="data"}
+df = r.df
+```
+
+## Enter Tidy R
+
+Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. These include operators `[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.
+
+The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions:
+
+- `slice`: choose observations (rows) by row numbers
+- `filter`: choose observations (rows) by value(s)
+- `arrange`: reorder rows
+- `select`: choose variables (columns) by name
+- `mutate`: derive new variables from existing ones
+- `group_by`: define subsets of rows for further processing
+- `summarize`: combine many values to create a single new value
+
+## The problem with `[`
+
+If we used the `[` in R, it can behave in inconsistent ways. For example let's work with the dataframe below called `df` which has some missing values:
+
+```{r}
+df
+```

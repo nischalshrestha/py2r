@@ -4,7 +4,7 @@ author: Nischal Shrestha
 output: 
   learnr::tutorial:
     fig_caption: no
-    progressive: yes
+    progressive: no
     allow_skip: true
     toc: true
     toc_depth: 2
@@ -21,373 +21,38 @@ library(tidyverse)
 library(rlang)
 library(knitr)
 # code checking
-tutorial_options(exercise.timelimit = 60, exercise.checker = gradethis::grade_learnr)
+tutorial_options(exercise.timelimit = 60, exercise.completion = FALSE, exercise.checker = gradethis::grade_learnr)
 opts_chunk$set(echo = FALSE)
 opts_chunk$set(comment = NA)
 ```
 
-```{python include = FALSE, context="data"}
-# set a python variable to point to mtcars
-mtcars = r.mtcars
-```
-
-```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
-# data <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
-```
-
-```{python include=FALSE, context="data"}
-df = r.df
-```
-
-## Introduction
-
-In this (very) short guide, we're going to cover some key concepts using dataframes in R by relating it to the language you are comfortable with, Python. Think of this as an interactive tutorial document, where you are going to read some text but most importantly, you are going to make use of a lot of "learning by doing" and play with code to reinforce the concepts. We shall use the **mtcars** dataset available in R throughout the tutorial.
-
-## How do I inspect data?
-
-Let's go over how to inspect a dataframe such as *mtcars*:
-
-```{r}
-head(mtcars) %>% kable
-```
-
-### Print the first few rows {.tabset .tabset-fade}
-
-#### In Python
-
-You are used to printing the first few rows using `head()`
-
-```{python echo = TRUE, eval = FALSE}
-mtcars.head()
-```
-
-```{python py-head}
-print(mtcars.head())
-```
-
-#### In R
-
-An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
-
-```{r head, exercise = TRUE, exercise.lines = 3}
+```{r child='topics/introduction.Rmd'}
 
 ```
 
-```{r head-hint}
-"Python calls a method on the dataframe object, whereas R passes the dataframe object to the function"
-```
-
-```{r head-check, include = FALSE}
-grade_result(
-  pass_if(~ identical(.result, head(mtcars)), "Not bad huh?")
-)
-```
-
-### Print the last few rows {.tabset .tabset-fade}
-
-#### In Python
-
-You are used to printing the last few rows using `tail()`. 
-
-```{python echo = TRUE, eval = FALSE}
-mtcars.tail()
-```
-
-```{python py-tail}
-print(mtcars.tail())
-```
-
-#### In R
-
-An equivalent `tail()` function exists in R. Try printing the last few rows of **mtcars** in R:
-
-```{r tail, exercise=TRUE, exercise.lines = 3, message=FALSE}
+```{r child='topics/inspection.Rmd'}
 
 ```
 
-```{r tail-check, include = FALSE}
-grade_result(
-  pass_if(~ identical(.result, tail(mtcars)), "Great job!")
-)
-```
-
-## How do I index rows and columns?
-
-### Index columns {.tabset .tabset-fade}
-
-#### In Python
-
-You indexed a column using either `[` or dot notation.
-
-Both `mtcars['mpg']` and `mtcars.mpg` references the **mpg** column.
-
-```{python eval=FALSE}
-mtcars['mpg']
-```
-```{python eval=FALSE}
-mtcars['mpg']
-```
-```{python py-column-indexing}
-print(mtcars['mpg'])
-```
-
-#### In R
-You can use the `[` as well. Try it out now by referencing the **mpg** column:
-
-```{r column, exercise = TRUE, exercise.lines = 3}
+```{r child='topics/indexing.Rmd'}
 
 ```
 
-```{r column-hint}
-mtcars[col_name]
-```
-
-```{r column-check}
-grade_result(
-  pass_if(~ identical(.result, mtcars['mpg']), "Easy enough!"),
-  fail_if(~ identical(.result, mtcars$mpg), "Using $ is fine but doesn't return a dataframe as explained in the next exercise.")
-)
-```
-
-
-But, what happens if you use the `.` notation to reference a column? Try that now in R:
-
-```{r column-indexing-2-wrong,  exercise = TRUE, exercise.lines = 3}
+```{r child='topics/filteringdata.Rmd'}
 
 ```
 
-Since `.` can be included in a variable name, R thinks you are trying to reference a variable. The `.` cannot be used to reference a column as you would expect coming from Python.
-
-Instead use `$`:
-```{r column-indexing-2,  exercise = TRUE, exercise.lines = 3}
+```{r child='topics/entertidy.Rmd'}
 
 ```
 
-```{r column-indexing-2-check, include = FALSE}
-grade_result(
-  pass_if(~ identical(.result, mtcars$mpg), "Use $ when you need to reference a column.")
-)
-```
-
-### Index element {.tabset .tabset-fade}
-
-Suppose we wanted to reference the fifth element of the **mpg** column.
-
-#### In Python
-You use `[` on the dataframe to reference the **mpg** column then `[` again to access the fifth item:
-
-```{python echo = TRUE, eval = FALSE}
-mtcars['mpg'][4]
-``` 
-
-```{python py-single}
-print(mtcars['mpg'][4])
-```
-
-**Note** how Python is 0-indexed.
-
-#### In R
-We instead use `$` to reference **mpg**, then use `[` like Python for accessing the element. Try it out!
-
-```{r single, exercise = TRUE, exercise.lines = 3}
+```{r child='topics/problemslicing.Rmd'}
 
 ```
 
-```{r single-hint}
-"Remember that we start counting from 1 in R."
-```
-
-```{r single-check, include = FALSE}
-grade_result(
-  pass_if(~ identical(.result, mtcars$mpg[5]), "Pretty easy right?")
-)
-```
-
-You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
-
-```{r single-check-wrong, exercise = TRUE, exercise.lines = 3, exercise.eval = TRUE}
+```{r child='topics/problemfiltering.Rmd'}
 
 ```
-
-## How do I filter data?
-
-### Filter with conditions {.tabset .tabset-fade}
-
-Suppose we want to filter mtcars for cars with more than 4 **cyl** (cylinders).
-
-#### In Python
-
-Filtering dataframes can be achieved by placing a boolean expression in a subset expression using `[` 
-```{python echo = TRUE, eval = FALSE}
-mtcars[mtcars.cyl > 4]
-``` 
-
-```{python py-filter}
-print(mtcars.cyl[mtcars.cyl > 4])
-```
-
-#### In R
-
-Try the same expression except using `$` to reference a column and observe what happens:
-```{r filter-wrong, exercise = TRUE, exercise.eval = TRUE, exercise.lines = 3}
-
-```
-
-```{r filter-wrong-hint, include = FALSE}
-mtcars[mtcars$col_name > 4]
-```
-
-The problem above is that R subsets columns by default, so R evaluates the condition it produces the following:
-```{r}
-mtcars$cyl > 4
-```
-
-A logical vector which exceeds the number of columns we have available, which leads us to the error above.
-
-To filter for rows, you have to specify the columns in addition to the rows when filtering: 
-
-```{r echo = TRUE, eval = FALSE}
-df[row_index, col_index]
-``` 
-
-where a blank index signifies all rows or columns. Go ahead and fix the code and enter the correct expression below:
-
-```{r filter, exercise = TRUE, exercise.lines = 3}
-
-```
-
-```{r filter-hint-1}
-"The problematic code just needs one additional character for the fix."
-```
-```{r filter-hint-2}
-mtcars[row_index, ]
-```
-
-```{r filter-check, include = FALSE}
-grade_result(
-  pass_if(~ identical(.result, mtcars[mtcars$cyl > 4, ]), "Remember to watch out for that comma!")
-)
-```
-
-## Enter Tidy R
-
-Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. These include operators `[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.
-
-The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions:
-
-- `slice`: choose observations (rows) by row numbers
-- `filter`: choose observations (rows) by value(s)
-- `arrange`: reorder rows
-- `select`: choose variables (columns) by name
-- `mutate`: derive new variables from existing ones
-- `group_by`: define subsets of rows for further processing
-- `summarize`: combine many values to create a single new value
-
-## The problem with `[`
-
-If we used the `[` in R, it can behave in inconsistent ways. For example let's work with the dataframe below called `df` which has some missing values:
-
-```{r}
-df
-```
-
-### The problem with slicing rows using `[` {.tabset .tabset-fade}
-
-Let's see what happens when we subset `df` with a range that clearly exceeds the total number of rows.
-
-#### In Python
-
-```{python echo=TRUE}
-df[1:10]
-```
-
-#### In R
-
-Try the same operation in R (Remember that comma to select rows!)
-
-```{r subset_bad, exercise=TRUE, exercise.lines = 3}
-
-```
-
-You should see some extra rows full of missing values or `NA`s. What?! This is because of a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). Basically R likes to perform operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3 but we can get with:
-
-```{r echo=TRUE}
-nrow(df)
-```
-
-But the range we specified to subset is `1:10`, a vector that is 10 elements long. So R recycles the 3 until reaching the 10, but it will create rows with `NA` which makes sense because it has no idea what you want the values to be! But, this is certainly confusing coming from Python.
-
-Tinker with your code above and change the range so that it exceeds 3 and you'll see it pads as many rows as required. Sadly, our story does not end here with `[`
-
-Here's where our first tidy verb `slice` comes in handy, which behaves as you'd expect in Python. Try out `slice(df, start:end)` where `df` is your dataframe, `start:end` is a range for the rows you want from `df`. It should make you happy with the results:
-```{r slice, exercise=TRUE, exercise.lines = 3}
-
-```
-
-```{r slice-hint, include=FALSE}
-slice(df, start:end)
-```
-
-## The problem with filtering in base R
-
-Now let's look at filtering with the same `df`:
-
-```{r}
-df
-```
-
-### The problem with filtering using `[` {.tabset .tabset-fade}
-
-#### In Python
-
-We can safely use `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
-
-```{python bracket_handled-1, echo=TRUE, eval=TRUE}
-df[df.a > 1]
-```
-
-and also where **b** is greater than 1:
-
-```{python bracket_handled-2, echo=TRUE, eval=TRUE}
-df[df.b > 1]
-```
-
-#### In R
-
-Try using `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
-
-```{r bracket_bad, exercise=TRUE, exercise.lines = 3}
-
-```
-
-Now, try using `[` to filter `df` for rows where **b** is greater than 1:
-
-```{r bracket_bad-2, exercise=TRUE, exercise.lines = 3}
-
-```
-
-If you don't see it yet, the issue for both of these operations is that they both kept rows with `NA` even though we wouldn't normally see them in Python.
-
-Now you will appreciate what `filter` does, our next tidy verb! The syntax for it is `filter(df, condition)` where the column in the condition does not need to be referenced from the data.
-
-```{r filter_good-example-1, echo=TRUE}
-filter(df, a > 1)
-```
-```{r filter_good-example-2, echo=TRUE}
-filter(df, b > 1)
-```
-
-Notice how we don't run into any issues now even with `NA` in our dataframe, just like Python. 
-
-Try tinkering with `filter` yourself:
-
-```{r filter_good, exercise=TRUE, exercise.lines = 3}
-
-```
-
-
-
 
 
 
