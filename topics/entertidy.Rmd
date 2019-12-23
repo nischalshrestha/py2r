@@ -3,14 +3,6 @@ title: "Enter Tidy"
 output: html_document
 ---
 
-```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
-```
-
-```{python include=FALSE, context="data"}
-df = r.df
-```
-
 ## Enter Tidy R
 
 Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. These include operators `[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.

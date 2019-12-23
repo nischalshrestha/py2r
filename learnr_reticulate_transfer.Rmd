@@ -19,6 +19,7 @@ library(learnr)
 library(gradethis)
 library(reticulate)
 library(tidyverse)
+library(glue)
 library(rlang)
 library(knitr)
 # code checking
@@ -27,34 +28,25 @@ opts_chunk$set(echo = FALSE)
 opts_chunk$set(comment = NA)
 ```
 
-```{r child='topics/introduction.Rmd'}
-
+```{python include = FALSE, context="data"}
+# set a python variable to point to mtcars
+mtcars = r.mtcars
 ```
 
-```{r child='topics/inspection.Rmd'}
-
+```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
 ```
 
-```{r child='topics/indexing.Rmd'}
-
+```{python include=FALSE, context="data"}
+df = r.df
 ```
 
-```{r child='topics/filteringdata.Rmd'}
-
+```{r}
+child_docs <- c("introduction.Rmd", "inspection.Rmd","indexing.Rmd","filteringdata.Rmd","entertidy.Rmd",
+                "problemslicing.Rmd","problemfiltering.Rmd")
+child_docs <- map_chr(child_docs, function(x) glue("./topics/", x))
 ```
 
-```{r child='topics/entertidy.Rmd'}
-
+```{r child = child_docs}
 ```
-
-```{r child='topics/problemslicing.Rmd'}
-
-```
-
-```{r child='topics/problemfiltering.Rmd'}
-
-```
-
-
-
 

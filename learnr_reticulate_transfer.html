@@ -543,6 +543,7 @@ library(learnr)
 library(gradethis)
 library(reticulate)
 library(tidyverse)
+library(glue)
 library(rlang)
 library(knitr)
 # code checking
@@ -553,6 +554,10 @@ opts_chunk$set(comment = NA)
  
 <script type="application/shiny-prerendered" data-context="server">
 learnr:::register_http_handlers(session, metadata = NULL)
+</script>
+ 
+<script type="application/shiny-prerendered" data-context="data">
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">
@@ -616,10 +621,6 @@ output$`tutorial-exercise-filter-wrong-output` <- renderUI({
 output$`tutorial-exercise-filter-output` <- renderUI({
   `tutorial-exercise-filter-result`()
 })
-</script>
- 
-<script type="application/shiny-prerendered" data-context="data">
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
 </script>
  
 <script type="application/shiny-prerendered" data-context="server">

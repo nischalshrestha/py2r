@@ -3,11 +3,6 @@ title: "Inspection"
 output: html_document
 ---
 
-```{python include = FALSE, context="data"}
-# set a python variable to point to mtcars
-mtcars = r.mtcars
-```
-
 ## How do I inspect data?
 
 Let's go over how to inspect a dataframe such as *mtcars*:
