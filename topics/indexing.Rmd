@@ -5,9 +5,9 @@ output: html_document
 
 ## How do I index rows and columns?
 
-### Index columns {.tabset .tabset-fade}
+### Index columns
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
 
 You indexed a column using either `[` or dot notation.
 
@@ -23,7 +23,8 @@ mtcars['mpg']
 print(mtcars['mpg'])
 ```
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
+
 You can use the `[` as well. Try it out now by referencing the **mpg** column:
 
 ```{r column, exercise = TRUE, exercise.lines = 3}
@@ -61,11 +62,12 @@ grade_result(
 )
 ```
 
-### Index element {.tabset .tabset-fade}
+### Index element
 
 Suppose we wanted to reference the fifth element of the **mpg** column.
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
+
 You use `[` on the dataframe to reference the **mpg** column then `[` again to access the fifth item:
 
 ```{python echo = TRUE, eval = FALSE}
@@ -78,7 +80,8 @@ print(mtcars['mpg'][4])
 
 **Note** how Python is 0-indexed.
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
+
 We instead use `$` to reference **mpg**, then use `[` like Python for accessing the element. Try it out!
 
 ```{r single, exercise = TRUE, exercise.lines = 3}

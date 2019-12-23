@@ -3,17 +3,17 @@ title: "Problem Slicing"
 output: html_document
 ---
 
-### The problem with slicing rows using `[` {.tabset .tabset-fade}
+### The problem with slicing rows using `[`
 
 Let's see what happens when we subset `df` with a range that clearly exceeds the total number of rows.
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
 
 ```{python echo=TRUE}
 df[1:10]
 ```
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
 
 Try the same operation in R (Remember that comma to select rows!)
 

@@ -11,11 +11,11 @@ Now let's look at filtering with the same `df`:
 df
 ```
 
-### The problem with filtering using `[` {.tabset .tabset-fade}
+### The problem with filtering using `[` 
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
 
-We can safely use `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
+In Python, we can safely use `[` to filter `df` for rows where **a** is greater than 1
 
 ```{python bracket_handled-1, echo=TRUE, eval=TRUE}
 df[df.a > 1]
@@ -27,9 +27,9 @@ and also where **b** is greater than 1:
 df[df.b > 1]
 ```
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
 
-Try using `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
+Now in R, try using `[` to filter `df` for rows where **a** is greater than 1 notice what happens:
 
 ```{r bracket_bad, exercise=TRUE, exercise.lines = 3}
 

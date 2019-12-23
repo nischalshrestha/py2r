@@ -5,13 +5,13 @@ output: html_document
 
 ## How do I filter data?
 
-### Filter with conditions {.tabset .tabset-fade}
+### Filter with conditions
 
 Suppose we want to filter mtcars for cars with more than 4 **cyl** (cylinders).
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
 
-Filtering dataframes can be achieved by placing a boolean expression in a subset expression using `[` 
+In Python, filtering dataframes can be achieved by placing a boolean expression in a subset expression using `[` 
 ```{python echo = TRUE, eval = FALSE}
 mtcars[mtcars.cyl > 4]
 ``` 
@@ -20,9 +20,9 @@ mtcars[mtcars.cyl > 4]
 print(mtcars.cyl[mtcars.cyl > 4])
 ```
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
 
-Try the same expression except using `$` to reference a column and observe what happens:
+Try the same expression in R except using `$` to reference a column and observe what happens:
 ```{r filter-wrong, exercise = TRUE, exercise.eval = TRUE, exercise.lines = 3}
 
 ```

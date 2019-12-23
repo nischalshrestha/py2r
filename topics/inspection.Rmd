@@ -16,9 +16,9 @@ Let's go over how to inspect a dataframe such as *mtcars*:
 head(mtcars) %>% kable
 ```
 
-### Print the first few rows {.tabset .tabset-fade}
+### Print the first few rows
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
 
 You are used to printing the first few rows using `head()`
 
@@ -30,7 +30,7 @@ mtcars.head()
 print(mtcars.head())
 ```
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
 
 An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
 
@@ -48,11 +48,11 @@ grade_result(
 )
 ```
 
-### Print the last few rows {.tabset .tabset-fade}
+### Print the last few rows
 
-#### In Python
+<img src="../images/py_logo.png" class="language-icon">
 
-You are used to printing the last few rows using `tail()`. 
+You are used to printing the last few rows using `tail()`.
 
 ```{python echo = TRUE, eval = FALSE}
 mtcars.tail()
@@ -62,7 +62,7 @@ mtcars.tail()
 print(mtcars.tail())
 ```
 
-#### In R
+<img src="../images/r_logo.png" class="language-icon">
 
 An equivalent `tail()` function exists in R. Try printing the last few rows of **mtcars** in R:
 
