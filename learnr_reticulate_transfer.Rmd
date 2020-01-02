@@ -1,5 +1,5 @@
 ---
-title: "Python to R: Dataframes"
+title: "Python to R: Dataframes Basics"
 author: Nischal Shrestha
 output: 
   learnr::tutorial:
@@ -21,29 +21,24 @@ library(reticulate)
 library(tidyverse)
 library(glue)
 library(rlang)
+library(rmarkdown)
 library(knitr)
 # code checking
+shiny_prerendered_clean("learnr_reticulate_transfer.Rmd")
 tutorial_options(exercise.timelimit = 60, exercise.completion = FALSE, exercise.checker = gradethis::grade_learnr)
 opts_chunk$set(echo = FALSE)
 opts_chunk$set(comment = NA)
 ```
 
-```{python include = FALSE, context="data"}
-# set a python variable to point to mtcars
-mtcars = r.mtcars
-```
-
-```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
-```
-
-```{python include=FALSE, context="data"}
-df = r.df
-```
-
 ```{r}
-child_docs <- c("introduction.Rmd", "inspection.Rmd","indexing.Rmd","filteringdata.Rmd","entertidy.Rmd",
-                "problemslicing.Rmd","problemfiltering.Rmd")
+child_docs <- c("introduction.Rmd", 
+                "inspection.Rmd",
+                "indexing.Rmd",
+                "filteringdata.Rmd",
+                "entertidy.Rmd",
+                "slice.Rmd", 
+                "select.Rmd", 
+                "filter.Rmd")
 child_docs <- map_chr(child_docs, function(x) glue("./topics/", x))
 ```
 

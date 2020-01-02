@@ -3,11 +3,19 @@ title: "Problem Slicing"
 output: html_document
 ---
 
-### The problem with slicing rows using `[`
+## `slice`
 
-Let's see what happens when we subset `df` with a range that clearly exceeds the total number of rows.
+### The problem with slicing using `[`
 
-<img src="../images/py_logo.png" class="language-icon">
+Let's see what happens when we subset rows of `df` with a range that clearly exceeds the total number of rows. 
+
+```{r}
+df
+```
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python, there are no surprises.
 
 ```{python echo=TRUE}
 df[1:10]
@@ -15,13 +23,17 @@ df[1:10]
 
 <img src="../images/r_logo.png" class="language-icon">
 
-Try the same operation in R (Remember that comma to select rows!)
+However, execute the same operation in R:
 
 ```{r subset_bad, exercise=TRUE, exercise.lines = 3}
-
+df[1:10, ]
 ```
 
-You should see some extra rows full of missing values or `NA`s. What?! This is because of a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). Basically R likes to perform operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3 but we can get with:
+You should see some extra rows full of missing values or `NA`s. 
+
+<b>WAT</b> 
+
+This results from a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). In a nutshell, R prefers performing operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3 but we can get with:
 
 ```{r echo=TRUE}
 nrow(df)

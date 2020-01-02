@@ -8,3 +8,22 @@
   border-radius:3px;
   color:#000;
 }
+
+.transfer {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+.positive {
+  background: #b6d7a8;
+}
+
+.negative {
+  background: #e6b8af;
+}
+
+.new {
+  background: #cfe2f3;
+}
+

@@ -1,9 +1,11 @@
 ---
-title: "Problem Filtering"
+title: "select"
 output: html_document
 ---
 
-## The problem with filtering in base R
+## `filter`
+
+### The problem with filtering in base R
 
 Now let's look at filtering with the same `df`:
 
@@ -13,7 +15,7 @@ df
 
 ### The problem with filtering using `[` 
 
-<img src="../images/py_logo.png" class="language-icon">
+<img src="../images/python_logo.png" class="language-icon">
 
 In Python, we can safely use `[` to filter `df` for rows where **a** is greater than 1
 
@@ -43,7 +45,11 @@ Now, try using `[` to filter `df` for rows where **b** is greater than 1:
 
 If you don't see it yet, the issue for both of these operations is that they both kept rows with `NA` even though we wouldn't normally see them in Python.
 
-Now you will appreciate what `filter` does, our next tidy verb! The syntax for it is `filter(df, condition)` where the column in the condition does not need to be referenced from the data.
+### Enter `filter`
+
+Our next verb `filter` addresses the issues with filtering using `[`. 
+
+The syntax is: `filter(df, condition)`
 
 ```{r filter_good-example-1, echo=TRUE}
 filter(df, a > 1)
@@ -52,7 +58,9 @@ filter(df, a > 1)
 filter(df, b > 1)
 ```
 
-Notice how we don't run into any issues now even with `NA` in our dataframe, just like Python. 
+Note how the column in the condition does not need to be referenced from the data using `$`
+
+Notice also how we don't run into any issues now even with `NA` in our dataframe, thereby mimicing Python's behavior. 
 
 Try tinkering with `filter` yourself:
 

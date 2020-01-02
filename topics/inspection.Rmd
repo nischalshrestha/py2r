@@ -3,6 +3,11 @@ title: "Inspection"
 output: html_document
 ---
 
+```{python include = FALSE, context="data"}
+# set a python variable to point to mtcars
+mtcars = r.mtcars
+```
+
 ## How do I inspect data?
 
 Let's go over how to inspect a dataframe such as *mtcars*:
@@ -12,20 +17,15 @@ head(mtcars) %>% kable
 ```
 
 ### Print the first few rows
+<!-- <hr style="width:100%; margin: auto;" /> -->
 
-<img src="../images/py_logo.png" class="language-icon">
+<img src="../images/python_logo.png" class="language-icon">
 
 You are used to printing the first few rows using `head()`
 
-```{python echo = TRUE, eval = FALSE}
+```{python echo=TRUE}
 mtcars.head()
 ```
-
-```{python py-head}
-print(mtcars.head())
-```
-
-<img src="../images/r_logo.png" class="language-icon">
 
 An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
 
@@ -45,7 +45,7 @@ grade_result(
 
 ### Print the last few rows
 
-<img src="../images/py_logo.png" class="language-icon">
+<img src="../images/python_logo.png" class="language-icon">
 
 You are used to printing the last few rows using `tail()`.
 
@@ -70,4 +70,5 @@ grade_result(
   pass_if(~ identical(.result, tail(mtcars)), "Great job!")
 )
 ```
+
 

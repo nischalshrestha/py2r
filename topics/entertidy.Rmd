@@ -3,11 +3,36 @@ title: "Enter Tidy"
 output: html_document
 ---
 
-## Enter Tidy R
+```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
+```
 
-Up to this point we have been using functions and operations in "base" R which is what's included in R from the get-go. These include operators `[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.
+```{python include=FALSE, context="data"}
+df = r.df
+```
 
-The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions:
+## What is Tidy R?
+
+Up to this point we have been using functions and operations available in "base" R---what you get from R out of the box. These include operators like `[` or `[[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.
+
+The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions and data workflow using the `%>%` 'pipe' operator from the `maggitr` [package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). If the base R looks like this:
+
+```
+result1 = function1(data, ...)
+result2 = function2(result1, ...)
+```
+
+The tidy R would look like this:
+
+```
+data %>%
+  function1(...) %>%
+  function2(...)
+```
+
+Note how the `%>%` allows one to pipe the data and/or result of a function to the next function, which you can think of as method chaining in Python.
+
+These functions perform actions on the data so we call them 'verbs'. There are a few you should become familiar with:
 
 - `slice`: choose observations (rows) by row numbers
 - `filter`: choose observations (rows) by value(s)
@@ -17,10 +42,9 @@ The tidyverse is a collection of packages that is designed to handle operations 
 - `group_by`: define subsets of rows for further processing
 - `summarize`: combine many values to create a single new value
 
-## The problem with `[`
+There are also variations for some of these but we will only cover these main verbs.
 
-If we used the `[` in R, it can behave in inconsistent ways. For example let's work with the dataframe below called `df` which has some missing values:
+#### If you want to learn more:
 
-```{r}
-df
-```
+The idea of "tidy" data was introduced by Hadley Wickham in his [paper](https://www.jstatsoft.org/article/view/v059i10) in the Journal of Statistical Software and is explained in detail in the [R for Data Science book](https://r4ds.had.co.nz/tidy-data.html) as well. It's worth the read if you are interested in the deeper roots of this way of programming.
+

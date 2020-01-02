@@ -1,0 +1,16 @@
+---
+title: "select"
+output: html_document
+---
+
+## `select`
+
+Another handy verb is `select` which allows us to select columns much more easily than using `[` and will even allow us to deselect columns as well. Let's see how with our `df` again:
+
+```{r echo=FALSE}
+df
+```
+
+
+
+

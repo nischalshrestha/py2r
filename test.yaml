@@ -1,0 +1,12 @@
+title: "sample_template"
+polyglot:
+  topics: 
+    inspection:
+      title: "How do I inspect data?"
+      subtopic_1: "Print the first few rows"
+        code_py: "mtcars.head()"
+        code_r: "head()"
+      subtopic_2: "Print the last few rows"
+        code_py: "mtcars.tail()"
+        code_r: "tail()"
+
