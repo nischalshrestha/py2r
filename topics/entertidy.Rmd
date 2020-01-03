@@ -42,7 +42,21 @@ These functions perform actions on the data so we call them 'verbs'. There are a
 - `group_by`: define subsets of rows for further processing
 - `summarize`: combine many values to create a single new value
 
-There are also variations for some of these but we will only cover these main verbs.
+There are also variations for some of these but we will only cover these main verbs. All of these verbs follow the form:
+
+```
+verb(data, args)
+```
+
+The first argument is always the data being piped forward from the previous function. However, it is important to note that passing the data is not necessary when already piped forward from previous data or operation:
+
+```
+data %>% verb1(args) %>% verb2(args)
+```
+
+TODO:
+
+- tibbles and how that helps: always return a dataframe which fixes the reducing dimension to a vector in base-R.
 
 #### If you want to learn more:
 

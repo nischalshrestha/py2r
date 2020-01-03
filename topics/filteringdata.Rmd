@@ -5,6 +5,8 @@ output: html_document
 
 ## How do I filter data?
 
+If we're going to do any kind of data analysis, we better learn how to sculpt and filter the data that we want to analyze! We'll go over the basics of filtering data in R. The good news is that most of this maps to your Python/Pandas knowledge.
+
 ### Filter with conditions
 
 Suppose we want to filter mtcars for cars with more than 4 **cyl** (cylinders).
@@ -33,6 +35,7 @@ Try the same filter operation with R:
 ```{r filter-hint-1}
 "Don't forget that comma for row selection!"
 ```
+
 ```{r filter-hint-2}
 mtcars[row_index, ]
 ```

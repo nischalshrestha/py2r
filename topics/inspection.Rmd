@@ -10,7 +10,7 @@ mtcars = r.mtcars
 
 ## How do I inspect data?
 
-Let's go over how to inspect a dataframe such as *mtcars*:
+Before learning anything, we might as well learn how to take a peek into dataframes. So, let's go over how to inspect a dataframe such as *mtcars*:
 
 ```{r}
 head(mtcars) %>% kable
@@ -27,7 +27,9 @@ You are used to printing the first few rows using `head()`
 mtcars.head()
 ```
 
-An equivalent function `head()` exists. Try printing 6 rows of **mtcars** with R:
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, an equivalent function `head()` exists. Try printing 6 rows of *mtcars* with R:
 
 ```{r head, exercise = TRUE, exercise.lines = 3}
 
@@ -59,7 +61,7 @@ print(mtcars.tail())
 
 <img src="../images/r_logo.png" class="language-icon">
 
-An equivalent `tail()` function exists in R. Try printing the last few rows of **mtcars** in R:
+An equivalent `tail()` function exists in R. Try printing the last few rows of *mtcars* in R:
 
 ```{r tail, exercise=TRUE, exercise.lines = 3, message=FALSE}
 
@@ -71,4 +73,4 @@ grade_result(
 )
 ```
 
-
+Alright! Now it's time to step through some rougher landscapes.

@@ -15,8 +15,6 @@ subtopics <- c("Print the first few rows", "Print the last few rows")
 
 # code / concept comparisons per topic / subtopic
 
-
-
 default_opts <- list(echo = TRUE, eval = FALSE)
 # generate options string from a list of key:boolean mapping
 generate_code_options <- function(opts) {
