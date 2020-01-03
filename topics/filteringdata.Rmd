@@ -40,7 +40,7 @@ Try the same filter operation with R:
 mtcars[row_index, ]
 ```
 
-```{r filter-check, include = FALSE}
+```{r filter-check}
 grade_result(
   pass_if(~ identical(.result, mtcars[mtcars$cyl > 4, ]), "Easy peasy!")
 )

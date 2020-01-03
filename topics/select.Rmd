@@ -5,11 +5,146 @@ output: html_document
 
 ## `select`
 
-Another handy verb is `select` which allows us to select columns much more easily than using `[` and will even allow us to deselect columns as well. Let's see how with our `df` again:
+Another handy verb is `select` which allows us to select columns much more easily than using `[` and will even allow us to deselect columns as well. Let's select the **am** (transmission) and **gear** columns  of `mtcars`:
 
 ```{r echo=FALSE}
 df
 ```
+
+The syntax is `select(data, cols)` where the data is a dataframe or tibble and the columns can be either comma-separated labels, a list of labels using `c()` or indices. Let's look at the column names first:
+
+```{r select-demo-1, echo=TRUE, exercise=TRUE, eval=TRUE}
+select(mtcars, am, gear)
+```
+
+Note how the column labels after the `mtcars` do not have to be quoted. Adding quotes works as well:
+
+```{r select-demo-2, echo=TRUE, exercise=TRUE, eval=TRUE}
+select(mtcars, 'am', 'gear')
+```
+
+In fact, `select` is flexible enough to allow using `c()` where the items are not quoted:
+
+```{r select-demo-3, echo=TRUE, exercise=TRUE, eval=TRUE}
+select(mtcars, c(am, gear))
+```
+
+but here also, the items can be quoted:
+```{r select-demo-4, echo=TRUE, exercise=TRUE, eval=TRUE}
+select(mtcars, c('am', 'gear'))
+```
+
+### So what?!
+
+Isn't all this just a different syntax that pretty much does the same thing as `[`? Well, yes but including the flexibility shown above, `select` has some other nice capabilities that we don't get from `[`.
+
+#### Range-based column selection
+
+Suppose we wanted to select a range of columns like from **mpg** up to and including **hp**:
+
+<img src="../images/python_logo.png" class="language-icon">
+
+We could do so using `.loc` in Python:
+```{python echo=TRUE}
+mtcars.loc[:, 'mpg':'hp']
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+Well, you can do the same in R with `select`! Go ahead and try that now to select columns from **mpg** up to and including **hp**:
+
+```{r select-columns-range, echo=TRUE, exercise=TRUE}
+
+```
+
+```{r select-columns-range-hint-1}
+"select"
+```
+
+```{r select-columns-range-hint-2}
+select(mtcars, 'col1':'col2')
+```
+
+```{r select-columns-range-check}
+grade_result(
+  pass_if(~ identical(.result, select(mtcars, 'mpg':'hp')), "Isn't that neat?")
+)
+```
+
+#### Dropping columns
+
+Let's say we want to drop some columns like **mpg** and **hp** and select the rest.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python, one could do so using `drop()` in Python. But the main limitation behind this is that it is 1) rather tedious and 2) you're constrained to specifying columns using a list:
+
+```{python echo=TRUE, eval=FALSE}
+mtcars.drop(['mpg','hp'], axis=1)
+```
+
+If we wanted to drop a range of columns, say from **mpg** to **hp**, dropping columns using a range is not straightforward in Python.
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.drop(mtcars.columns[0:4], axis=1)
+```
+
+or using `.loc`:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.drop(mtcars.loc[:, 'mpg':'hp'], axis=1)
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, `select` makes this a lot easier, simply use `-` in front of the column label:
+
+```{r select-drop-minus, echo=TRUE, exercise=TRUE, exercise.lines=3}
+select(mtcars, -mpg, -hp)
+```
+
+or using list:
+
+```{r select-drop-minus-list, echo=TRUE, exercise=TRUE, exercise.lines=3}
+select(mtcars, -c(mpg, hp))
+```
+
+This is also not possible in base R:
+
+```{r echo=TRUE, eval=FALSE}
+mtcars[, -c('mpg', 'hp')]
+# Error in -c("mpg", "hp") : invalid argument to unary operator
+```
+
+Dropping by range is also simple using column labels:
+
+```{r select-drop-minus-range-label, echo=TRUE, exercise=TRUE, exercise.lines=3}
+select(mtcars, -('mpg':'hp'))
+```
+
+or indices:
+
+```{r select-drop-minus-range-num, echo=TRUE, exercise=TRUE, exercise.lines=3}
+select(mtcars, -(1:4))
+```
+
+Hopefully you have come away feeling like `select` is an extremely useful verb to select and drop the columns we want. On to the next verb, `filter`!
+
+### If you want to learn more:
+
+We have just begun to scratch the surface of the useful capabilities of `select`. For example, there are many useful utility functions available to further filter columns, which you can learn more about in the reference [page](https://dplyr.tidyverse.org/reference/select.html).
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
