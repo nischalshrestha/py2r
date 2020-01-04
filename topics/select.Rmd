@@ -8,7 +8,7 @@ output: html_document
 Another handy verb is `select` which allows us to select columns much more easily than using `[` and will even allow us to deselect columns as well. Let's select the **am** (transmission) and **gear** columns  of `mtcars`:
 
 ```{r echo=FALSE}
-df
+head(mtcars)
 ```
 
 The syntax is `select(data, cols)` where the data is a dataframe or tibble and the columns can be either comma-separated labels, a list of labels using `c()` or indices. Let's look at the column names first:
@@ -17,21 +17,21 @@ The syntax is `select(data, cols)` where the data is a dataframe or tibble and t
 select(mtcars, am, gear)
 ```
 
-Note how the column labels after the `mtcars` do not have to be quoted. Adding quotes works as well:
+Note how the column labels after the `mtcars` do not have to be quoted. You can also make use of that `%>%` syntax so we only print the first few rows if you want. Examine the code below and note that labels can be quoted as well:
 
 ```{r select-demo-2, echo=TRUE, exercise=TRUE, eval=TRUE}
-select(mtcars, 'am', 'gear')
+select(mtcars, 'am', 'gear') %>% head()
 ```
 
 In fact, `select` is flexible enough to allow using `c()` where the items are not quoted:
 
 ```{r select-demo-3, echo=TRUE, exercise=TRUE, eval=TRUE}
-select(mtcars, c(am, gear))
+select(mtcars, c(am, gear)) %>% head()
 ```
 
 but here also, the items can be quoted:
 ```{r select-demo-4, echo=TRUE, exercise=TRUE, eval=TRUE}
-select(mtcars, c('am', 'gear'))
+select(mtcars, c('am', 'gear')) %>% head()
 ```
 
 ### So what?!
@@ -46,7 +46,7 @@ Suppose we wanted to select a range of columns like from **mpg** up to and inclu
 
 We could do so using `.loc` in Python:
 ```{python echo=TRUE}
-mtcars.loc[:, 'mpg':'hp']
+mtcars.loc[:, 'mpg':'hp'].head()
 ```
 
 <img src="../images/r_logo.png" class="language-icon">
@@ -71,6 +71,38 @@ grade_result(
 )
 ```
 
+#### Reordering columns
+
+Let's take a brief look at reordering columns of a dataframe. Let's suppose we want to put the **carb** all the way at the front followed by **cyl** then finally **mpg** and the rest of the columns.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+There isn't an easy way we can achieve this in Python. One method is to simply extract the columns list then swap using list indexing:
+
+```{python echo=TRUE, eval=TRUE}
+cols = mtcars.columns.tolist()
+cols = ['carb', 'cyl', 'mpg'] + cols[2:-1]
+mtcars[cols].head()
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, you could do it in base-R, but this makes it quite confusing and suffers the same issue as Python in that you can to keep track of what the index was for each column.
+
+```{r select-base-reorder, echo=TRUE, exercise=TRUE, exercise.lines=3}
+total <- ncol(mtcars)
+mtcars[, c(total, 2:1, 4:total-1)] %>% head()
+```
+
+R's `select` makes this very easy, and this is also where convenience functions in `dplyr` becomes, well, convenient:
+
+```{r select-reorder, echo=TRUE, exercise=TRUE, exercise.lines=3}
+select(mtcars, carb, cyl, mpg, everything()) %>% head()
+```
+
+`everything` selects all the other columns not already selected so far. It is just one of many other [utility functions](https://dplyr.tidyverse.org/reference/select.html#useful-functions).
+
+
 #### Dropping columns
 
 Let's say we want to drop some columns like **mpg** and **hp** and select the rest.
@@ -86,13 +118,13 @@ mtcars.drop(['mpg','hp'], axis=1)
 If we wanted to drop a range of columns, say from **mpg** to **hp**, dropping columns using a range is not straightforward in Python.
 
 ```{python echo=TRUE, eval=TRUE}
-mtcars.drop(mtcars.columns[0:4], axis=1)
+mtcars.drop(mtcars.columns[0:4], axis=1).head()
 ```
 
 or using `.loc`:
 
 ```{python echo=TRUE, eval=TRUE}
-mtcars.drop(mtcars.loc[:, 'mpg':'hp'], axis=1)
+mtcars.drop(mtcars.loc[:, 'mpg':'hp'], axis=1).head()
 ```
 
 <img src="../images/r_logo.png" class="language-icon">
@@ -100,37 +132,40 @@ mtcars.drop(mtcars.loc[:, 'mpg':'hp'], axis=1)
 In R, `select` makes this a lot easier, simply use `-` in front of the column label:
 
 ```{r select-drop-minus, echo=TRUE, exercise=TRUE, exercise.lines=3}
-select(mtcars, -mpg, -hp)
+select(mtcars, -mpg, -hp) %>% head()
 ```
 
 or using list:
 
 ```{r select-drop-minus-list, echo=TRUE, exercise=TRUE, exercise.lines=3}
-select(mtcars, -c(mpg, hp))
+select(mtcars, -c(mpg, hp)) %>% head()
 ```
 
-This is also not possible in base R:
+**GOTCHA!** Using `-` to drop columns using labels is also not possible in base R:
 
 ```{r echo=TRUE, eval=FALSE}
 mtcars[, -c('mpg', 'hp')]
 # Error in -c("mpg", "hp") : invalid argument to unary operator
 ```
 
-Dropping by range is also simple using column labels:
+Dropping by range is also much easier than base R, using column labels:
 
 ```{r select-drop-minus-range-label, echo=TRUE, exercise=TRUE, exercise.lines=3}
-select(mtcars, -('mpg':'hp'))
+select(mtcars, -('mpg':'hp')) %>% head()
+```
+```{r select-drop-minus-range-unquoted-label, echo=TRUE, exercise=TRUE, exercise.lines=3}
+select(mtcars, -(mpg:hp)) %>% head()
 ```
 
 or indices:
 
 ```{r select-drop-minus-range-num, echo=TRUE, exercise=TRUE, exercise.lines=3}
-select(mtcars, -(1:4))
+select(mtcars, -(1:4)) %>% head()
 ```
 
 Hopefully you have come away feeling like `select` is an extremely useful verb to select and drop the columns we want. On to the next verb, `filter`!
 
-### If you want to learn more:
+#### If you want to learn more:
 
 We have just begun to scratch the surface of the useful capabilities of `select`. For example, there are many useful utility functions available to further filter columns, which you can learn more about in the reference [page](https://dplyr.tidyverse.org/reference/select.html).
 

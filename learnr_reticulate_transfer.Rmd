@@ -31,8 +31,22 @@ opts_chunk$set(echo = FALSE)
 opts_chunk$set(comment = NA)
 ```
 
-<!-- Include all topic Rmds. Order is important! -->
+<!-- Some data dependencies -->
+```{python include = FALSE, context="data"}
+# set a python variable to point to mtcars
+mtcars = r.mtcars
+```
 
+```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5), c=c(6,7,8))
+```
+
+```{python include=FALSE, context="data"}
+df = r.df
+```
+
+
+<!-- Include all topic Rmds. Order is important! -->
 ```{r}
 child_docs <- c("introduction.Rmd",
                 "inspection.Rmd",

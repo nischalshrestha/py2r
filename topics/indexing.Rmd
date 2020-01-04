@@ -45,7 +45,7 @@ grade_result(
 )
 ```
 
-Using the `.` notation to reference a column does not work in R. Try executing `mtcars.mpg`
+**GOTCHA!** Using the `.` notation to reference a column does not work in R. Try executing `mtcars.mpg`
 
 ```{r wrong-reference, exercise = TRUE, exercise.lines = 2, echo=TRUE}
 
@@ -100,7 +100,9 @@ grade_result(
 )
 ```
 
-You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
+You may wonder why we didn't use the `[` syntax instead.
+
+**GOTCHA!** Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
 
 ```{r single-check-wrong, exercise = TRUE, exercise.lines = 3, exercise.eval = TRUE}
 
@@ -109,9 +111,6 @@ You may wonder why we didn't use the `[` syntax instead. Using `[` returns a dat
 ### Indexing multiple columns
 
 What if we wanted to select **mpg**, **cyl** and **hp** columns?
-
-<!-- TODO: -->
-<!-- - Gotcha: [[ only selects a single col unlike Python. -->
 
 <img src="../images/python_logo.png" class="language-icon">
 

@@ -3,60 +3,77 @@ title: "Enter Tidy"
 output: html_document
 ---
 
-```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5))
-```
-
-```{python include=FALSE, context="data"}
-df = r.df
-```
-
 ## What is Tidy R?
 
 Up to this point we have been using functions and operations available in "base" R---what you get from R out of the box. These include operators like `[` or `[[` and functions like `head`. Although these operators and functions are fine, they can be clunky to use and don't handle missing values and out-of-bound vectors properly selecting subsets of the dataframe.
 
 The tidyverse is a collection of packages that is designed to handle operations in a safe and consistent manner, while providing intuitive functions and data workflow using the `%>%` 'pipe' operator from the `maggitr` [package](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). If the base R looks like this:
 
-```
+```{r echo=TRUE, eval=FALSE}
 result1 = function1(data, ...)
 result2 = function2(result1, ...)
+result3 = function3(result2, ...)
 ```
 
-The tidy R would look like this:
+or in the nested form like this:
 
+```{r echo=TRUE, eval=FALSE}
+result = function3(
+             function2(
+                 function1(data, ...))
+             )
+         )
 ```
+
+The tidy R offers a [fluent interface](https://www.martinfowler.com/bliki/FluentInterface.html) style which looks like this:
+
+```{r echo=TRUE, eval=FALSE}
+results <- data %>%
+             function1(...) %>%
+             function2(...) %>%
+             function3(...)
+```
+
+Note how the `%>%` allows one to pipe the data and/or result of a function to the next function, which you can think of as method chaining in Python. This makes the function evaluation order clearer as it goes from top to bottom or left to right, which is natural compared to the nested call style. The style also is less tedious than assigning to temporary variables. 
+
+Also keep in mind one could choose not to store the result, in case you just want to apply the functions:
+
+```{r echo=TRUE, eval=FALSE}
 data %>%
   function1(...) %>%
-  function2(...)
+  function2(...) %>%
+  function3(...)
 ```
 
-Note how the `%>%` allows one to pipe the data and/or result of a function to the next function, which you can think of as method chaining in Python.
 
-These functions perform actions on the data so we call them 'verbs'. There are a few you should become familiar with:
+These functions perform actions on the data so we call them 'verbs'. There are a few you should become familiar with especially from the `dplyr` package, which defines this style of programming:
 
 - `slice`: choose observations (rows) by row numbers
+- `select`: choose variables (columns) by name
 - `filter`: choose observations (rows) by value(s)
 - `arrange`: reorder rows
-- `select`: choose variables (columns) by name
 - `mutate`: derive new variables from existing ones
 - `group_by`: define subsets of rows for further processing
 - `summarize`: combine many values to create a single new value
 
 There are also variations for some of these but we will only cover these main verbs. All of these verbs follow the form:
 
-```
+```{r echo=TRUE, eval=FALSE}
 verb(data, args)
 ```
 
 The first argument is always the data being piped forward from the previous function. However, it is important to note that passing the data is not necessary when already piped forward from previous data or operation:
 
-```
+```{r echo=TRUE, eval=FALSE}
 data %>% verb1(args) %>% verb2(args)
 ```
 
-TODO:
+#### So what?
 
-- tibbles and how that helps: always return a dataframe which fixes the reducing dimension to a vector in base-R.
+At this point you might be thinking, "Isn't this just a different style? How does it really benefit me?" It's true that style can be subjective but we'll go over some nice conveniences that come with this style.
+
+<!-- TODO: -->
+<!-- - tibbles and how that helps: always return a dataframe which fixes the reducing dimension to a vector in base-R. -->
 
 #### If you want to learn more:
 

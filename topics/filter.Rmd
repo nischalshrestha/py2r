@@ -7,7 +7,7 @@ output: html_document
 
 ### The problem with filtering in base R
 
-Now let's look at filtering with the same `df`:
+Now let's look at filtering with the a simple dataframe called `df`:
 
 ```{r}
 df
@@ -43,7 +43,7 @@ Now, try using `[` to filter `df` for rows where **b** is greater than 1:
 
 ```
 
-If you don't see it yet, the issue for both of these operations is that they both kept rows with `NA` even though we wouldn't normally see them in Python.
+**GOTCHA!** If you don't see it yet, the issue for both of these operations is that they both kept rows with `NA` even though we wouldn't normally see them in Python.
 
 ### Enter `filter`
 
@@ -60,12 +60,77 @@ filter(df, b > 1)
 
 Note how the column in the condition does not need to be referenced from the data using `$`
 
-Notice also how we don't run into any issues now even with `NA` in our dataframe, thereby mimicing Python's behavior. 
+Notice also how we don't run into any issues now even with `NA` in our dataframe, thereby mimicing Python's behavior.
 
-Try tinkering with `filter` yourself:
+Try playing `filter` yourself:
 
-```{r filter_good, exercise=TRUE, exercise.lines = 3}
+```{r filter_play, exercise=TRUE, exercise.lines = 3}
 
 ```
+
+Depending on what you tried, you may have run into some confusion about all of its capabilities like multiple conditions etc. which we will now cover.
+
+### Multiple conditions
+
+What if we want to apply multiple conditions? Let's say we're looking to buy one of those cars in mtacrs dataset and we want cars such that their **mpg** is greater than 20 and there are 6 *cyl* or cylinders.
+
+<!-- TODO: , means & but & can also be used -->
+
+<img src="../images/python_logo.png" class="language-icon">
+
+Think back to using `query` in Python:
+
+```{python query, echo=TRUE, eval=TRUE}
+mtcars.query('mpg > 20 & cyl == 6')
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+We can mimic Python's `query` using R's `filter` to do the same operation, which also looks syntactically similar:
+
+```{r filter-multiple, exercise=TRUE, exercise.lines = 3}
+filter(mtcars, mpg > 20 & cyl == 6)
+```
+
+The difference is that the conditions don't need to be quoted. `filter` also allows using `,` to indicate the `&` boolean operator. Note that this is the only shorthand and just applies to `&` not for other operators like `|`. Execute the following:
+
+```{r filter-multiple-2, exercise=TRUE, exercise.lines = 3}
+filter(mtcars, mpg > 20, cyl == 6)
+```
+
+**GOTCHA!** You might have noticed something different for both outputs compared to Python. Where are the rownames?!
+
+The one small downside of `filter` and some other verbs is that rownames can be silently dropped. Often times, this doesn't matter for analysis. 
+
+However, we have a way to preserve the names using the `rownames_to_column` function from the `tibble` package within the `tidyverse` package. If you imported `tidyverse` there is no need to import it. 
+
+Fix the code below by calling `rownames_to_column` to our data in the first argument:
+
+```{r filter-exercise, exercise=TRUE, exercise.lines = 3}
+filter(mtcars, mpg > 20, cyl == 6)
+```
+
+```{r filter-exercise-check}
+grade_result(
+  pass_if(~ identical(.result, filter(rownames_to_column(mtcars), mpg > 20, cyl == 6)), "We got our rownames back!"),
+  fail_if(~ identical(.result, filter(mtcars, mpg > 20, cyl == 6)), "Oops! Still missing the rownames.")
+)
+```
+
+There you have it! We have covered the basics of `filter`, an important verb in our data analysis toolkit! 
+
+#### If you want to learn more:
+
+There is a ton you can do with `filter` and we will come back to it in our last topic, but you can always dig into the [docs](https://dplyr.tidyverse.org/reference/filter.html) to learn more!
+
+
+
+
+
+
+
+
+
+
 
 
