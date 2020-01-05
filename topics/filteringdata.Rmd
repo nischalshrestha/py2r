@@ -3,9 +3,9 @@ title: "Filtering Data"
 output: html_document
 ---
 
-## How do I filter data?
+## Filtering basics
 
-If we're going to do any kind of data analysis, we better learn how to sculpt and filter the data that we want to analyze! We'll go over the basics of filtering data in R. The good news is that most of this maps to your Python/Pandas knowledge.
+If we're going to do any kind of data analysis, we better learn how to filter the data that we want to analyze! We'll briefly go over the basics of filtering data in R here. The good news is that most of this maps to your Python/Pandas knowledge.
 
 ### Filter with conditions
 
@@ -45,3 +45,5 @@ grade_result(
   pass_if(~ identical(.result, mtcars[mtcars$cyl > 4, ]), "Easy peasy!")
 )
 ```
+
+Besides that pesky comma, this is essentially the gist of filter which is largely similar to how you did it in Python. However, on a later topic, we'll introduce a different way of filtering data and more advanced queries using condition chaining.

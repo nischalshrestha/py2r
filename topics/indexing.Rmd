@@ -3,7 +3,7 @@ title: "Indexing"
 output: html_document
 ---
 
-## How do I index rows and columns?
+## Indexing rows and columns
 
 Before you learn anything else about dataframe manipulations, you need to make it safely across the landmines waiting in the "indexing syntax" field before you. In this topic, we'll get you safely across and teach you the gotchas in R when moving from Python's row/column indexing.
 

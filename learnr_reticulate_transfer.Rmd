@@ -23,28 +23,13 @@ library(glue)
 library(rlang)
 library(knitr)
 library(rmarkdown)
-# # code checking options
-shiny_prerendered_clean('learnr_reticulate_transfer.Rmmd')
+# code checking options
+shiny_prerendered_clean('learnr_reticulate_transfer.Rmd')
 tutorial_options(exercise.timelimit = 60, exercise.completion = FALSE, exercise.checker = gradethis::grade_learnr)
-# # by default, let's not show code as many are written for learnr
+# by default, let's not show code as many are written for learnr
 opts_chunk$set(echo = FALSE)
 opts_chunk$set(comment = NA)
 ```
-
-<!-- Some data dependencies -->
-```{python include = FALSE, context="data"}
-# set a python variable to point to mtcars
-mtcars = r.mtcars
-```
-
-```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
-df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5), c=c(6,7,8))
-```
-
-```{python include=FALSE, context="data"}
-df = r.df
-```
-
 
 <!-- Include all topic Rmds. Order is important! -->
 ```{r}
@@ -55,7 +40,8 @@ child_docs <- c("introduction.Rmd",
                 "entertidy.Rmd",
                 "slice.Rmd",
                 "select.Rmd",
-                "filter.Rmd")
+                "filter.Rmd",
+                "arrange.Rmd")
 child_docs <- map_chr(child_docs, function(x) glue("./topics/", x))
 ```
 

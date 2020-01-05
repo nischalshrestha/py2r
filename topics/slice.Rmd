@@ -3,6 +3,14 @@ title: "Problem Slicing"
 output: html_document
 ---
 
+```{r bracket-df, eval=TRUE, include=FALSE, context="data"}
+df <- data.frame(a=c(1,2,NA), b=c(NA, 4, 5), c=c(6,7,8))
+```
+
+```{python include=FALSE, context="data"}
+df = r.df
+```
+
 ## `slice`
 
 ### The problem with slicing using `[`

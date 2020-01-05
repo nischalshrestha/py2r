@@ -1,0 +1,157 @@
+---
+title: "select"
+output: html_document
+---
+
+## `arrange`
+
+### Sorting rows by a column
+
+Our next verb `arrange` will help us sort rows. Let's sort the mtcars dataset by mpg first by ascending order then descending order. Here is `mtcars` again:
+
+```{r}
+head(mtcars)
+```
+
+<img src="../images/python_logo.png" class="language-icon">
+
+You were probably using `sort_values` in Python to sort rows:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.sort_values(by='mpg')
+```
+
+and we needed to pass in a `False` to the `ascending` parameter to indicate descending order:
+
+```{python, echo=TRUE, eval=TRUE}
+mtcars.sort_values(by='mpg', ascending=False)
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, there are a couple of ways to sort. First let's look at the base R way.
+
+You can use the `order` function:
+
+```{r base-sort-simple, exercise=TRUE, exercise.lines = 3}
+mtcars[order(mtcars$mpg),]
+```
+
+and unlike Python, for descending order, you merely prepend the column reference with `-`:
+
+```{r base-sort-simple-desc, exercise=TRUE, exercise.lines = 3}
+mtcars[order(-mtcars$mpg),]
+```
+
+However, it's a little clunky to have to reference the column using `$` everytime. What if we left out the `mtcars$` part?
+
+Try executing the code below:
+
+```{r base-sort-bad, exercise=TRUE, exercise.lines = 3}
+mtcars[order(mpg), ]
+```
+
+**GOTCHA!** R is confused what the `mpg` is when directly referencing it without the use of `$`! You should've seen an error:
+```
+Error: Must use a vector in `[`, not an object of class matrix.
+```
+
+There is a way to avoid this by first using `attach` which you can think of as adding a path for R to search for. `attach` allows you to add `mtcars` into the search path, which means it helps R figure out that you meant the `mpg` column without direct reference:
+
+```{r base-sort-better, message=FALSE, warning=TRUE, exercise=TRUE, exercise.lines = 3}
+attach(mtcars)
+mtcars[order(mpg), ]
+```
+
+and descending:
+
+```{r base-sort-better-descending, exercise=TRUE, exercise.lines = 3}
+mtcars[order(-mpg), ]
+```
+
+Note how we didn't have to reference the `mpg` using the `$` anymore. But that's one extra function just to achieve direct reference, just so we can sort easily. There must be a better way, something like Python's `sort_values`!
+
+### Enter `arrange`:
+
+Using `arrange` we can directly mention the columns we want to sort the rows by:
+
+```{r tidy-sort, exercise=TRUE, exercise.lines = 3}
+arrange(mtcars, mpg)
+```
+
+then for descending we prepend a `-` like we did for `order`:
+
+```{r tidy-sort-minus, exercise=TRUE, exercise.lines = 3}
+arrange(mtcars, -mpg)
+```
+If the `-` is confusing, there is a convenient function called `desc()` which can be used to sort by descending order:
+
+```{r tidy-sort-desc, exercise=TRUE, exercise.lines = 3}
+arrange(mtcars, desc(mpg))
+```
+
+The `-` and `desc` do the same thing but the latter is clearer in intention.
+
+**GOTCHA!** If you haven't noticed yet, unlike the `order` function used in base R, the rownames are silently dropped when using `arrange`. As mentioned before, if row names are important to you, use the `rownames_to_column()` function.
+
+Let's do that now. Go ahead and use `rownames_to_columns()` on `mtcars`, then make use of that `%>%` to pipe the result to `arrange`, sorting by **mpg** descending order. Finally, pipe the result to a `head` as we only want to gander at the first few rows:
+
+```{r tidy-sort-chain, exercise=TRUE, exercise.lines = 3}
+
+```
+```{r tidy-sort-chain-hint}
+rownames_to_column(...) %>% 
+  verb(...) %>% 
+  verb(...)
+```
+
+```{r tidy-sort-chain-check, exercise=TRUE, exercise.lines = 3}
+grade_result(
+  pass_if(~ identical(., rownames_to_column(mtcars) %>% arrange(-mpg) %>% head()), "")
+)
+```
+
+### Sorting rows by multiple columns
+
+Now, let's sort by **cyl** and **disp**, first in ascending then in descending order:
+
+<img src="../images/python_logo.png" class="language-icon">
+
+Once again you have done this using `sort_values` in Python using a list of columns:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.sort_values(by=['cyl', 'disp'])
+```
+
+and in descending order:
+
+```{python, echo=TRUE, eval=TRUE}
+mtcars.sort_values(by=['cyl', 'disp'], ascending=False)
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+We can use `arrange` to do the same in R:
+
+```{r tidy-sort-multiple, exercise=TRUE, exercise.lines = 3}
+arrange(mtcars, cyl, disp)
+```
+
+and in descending order:
+
+```{r tidy-sort-multiple-minus, exercise=TRUE, exercise.lines = 3}
+arrange(mtcars, -cyl, -disp)
+```
+
+or
+
+```{r tidy-sort-multiple-desc, exercise=TRUE, exercise.lines = 3}
+arrange(mtcars, desc(cyl), desc(disp))
+```
+
+We have now covered the basics of `arrange`. Give yourself a pat in the back! You can now slice, select, filter and arrange dataframes! On to the next!
+
+#### If you want to learn more:
+
+There are other things you can do with `arrange`, which you can find in the [docs](https://dplyr.tidyverse.org/reference/arrange.html).
+

@@ -74,8 +74,6 @@ Depending on what you tried, you may have run into some confusion about all of i
 
 What if we want to apply multiple conditions? Let's say we're looking to buy one of those cars in mtacrs dataset and we want cars such that their **mpg** is greater than 20 and there are 6 *cyl* or cylinders.
 
-<!-- TODO: , means & but & can also be used -->
-
 <img src="../images/python_logo.png" class="language-icon">
 
 Think back to using `query` in Python:
