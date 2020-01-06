@@ -15,16 +15,15 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 # first, some packages for interactive tutorial, polyglot environment and tidyverse
+library(tibble)
+library(dplyr)
+library(purrr)
+library(knitr)
+library(reticulate)
 library(learnr)
 library(gradethis)
-library(reticulate)
-library(tidyverse)
 library(glue)
-library(rlang)
-library(knitr)
-library(rmarkdown)
 # code checking options
-shiny_prerendered_clean('learnr_reticulate_transfer.Rmd')
 tutorial_options(exercise.timelimit = 60, exercise.completion = FALSE, exercise.checker = gradethis::grade_learnr)
 # by default, let's not show code as many are written for learnr
 opts_chunk$set(echo = FALSE)

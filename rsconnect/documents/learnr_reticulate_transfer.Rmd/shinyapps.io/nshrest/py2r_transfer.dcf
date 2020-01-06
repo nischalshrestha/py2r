@@ -1,13 +1,13 @@
-name: learnr_reticulate_transfer
-title: learnr_reticulate_transfer
+name: py2r_transfer
+title: py2r_transfer
 username:
 account: nshrest
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 1607292
-bundleId: 2703680
-url: https://nshrest.shinyapps.io/learnr_reticulate_transfer/
-when: 1578025775.39915
+appId: 1628636
+bundleId: 2708423
+url: https://nshrest.shinyapps.io/py2r_transfer/
+when: 1578274906.67154
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .RData|playground.R|sample_template.html|sample_template.Rmd|test.yaml|css/.DS_Store|sample_template_data/data_chunks_index.txt

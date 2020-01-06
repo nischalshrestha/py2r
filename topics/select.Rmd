@@ -73,7 +73,7 @@ grade_result(
 
 #### Reordering columns
 
-Let's take a brief look at reordering columns of a dataframe. Let's suppose we want to put the **carb** all the way at the front followed by **cyl** then finally **mpg** and the rest of the columns.
+Let's take a brief look at reordering columns of a dataframe. Let's suppose we want to put the **carb** (last column) all the way at the front, followed by **cyl** then finally **mpg** and the rest of the columns.
 
 <img src="../images/python_logo.png" class="language-icon">
 

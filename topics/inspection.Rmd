@@ -4,7 +4,7 @@ output: html_document
 ---
 
 <!-- Some data dependencies -->
-```{python include = FALSE, context="data"}
+```{python include=FALSE, context="data"}
 # set a python variable to point to mtcars
 mtcars = r.mtcars
 ```
@@ -14,7 +14,7 @@ mtcars = r.mtcars
 Before learning anything, we might as well learn how to take a peek into dataframes. So, let's go over how to inspect a dataframe such as *mtcars*:
 
 ```{r}
-head(mtcars) %>% kable
+head(mtcars) %>% kable()
 ```
 
 ### Print the first few rows

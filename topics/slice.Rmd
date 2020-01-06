@@ -39,7 +39,7 @@ df[1:10, ]
 
 **GOTCHA!** You should see some extra rows full of missing values or `NA`s. 
 
-This results from a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). In a nutshell, R prefers performing operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3 but we can get with:
+This results from a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). In a nutshell, R prefers performing operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3:
 
 ```{r echo=TRUE}
 nrow(df)
@@ -47,7 +47,7 @@ nrow(df)
 
 But the range we specified to subset is `1:10`, a vector that is 10 elements long. So R recycles the 3 until reaching the 10, but it will create rows with `NA` which makes sense because it has no idea what you want the values to be! But, this is certainly confusing coming from Python.
 
-Tinker with your code above and change the range so that it exceeds 3 and you'll see it pads as many rows as required. Sadly, our story does not end here with `[`
+Tinker with your code above and change the range so that it exceeds 3 and you'll see it pads as many rows as required.
 
 Here's where our first tidy verb `slice` comes in handy, which behaves as you'd expect in Python. Try out `slice(df, start:end)` where `df` is your dataframe, `start:end` is a range for the rows you want from `df`. It should make you happy with the results:
 ```{r slice, exercise=TRUE, exercise.lines = 3}
@@ -57,3 +57,5 @@ Here's where our first tidy verb `slice` comes in handy, which behaves as you'd 
 ```{r slice-hint, include=FALSE}
 slice(df, start:end)
 ```
+
+Sadly, our story does not end here with `[`. Let's explore other problems in the next topic.
