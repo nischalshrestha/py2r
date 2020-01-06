@@ -1,5 +1,5 @@
 ---
-title: "Python to R: Dataframes Basics"
+title: "Python ⇒ R: Dataframes Basics"
 author: Nischal Shrestha
 output: 
   learnr::tutorial:
@@ -41,7 +41,8 @@ child_docs <- c("introduction.Rmd",
                 "select.Rmd",
                 "filter.Rmd",
                 "arrange.Rmd",
-                "mutate.Rmd")
+                "mutate.Rmd",
+                "group_by.Rmd")
 child_docs <- map_chr(child_docs, function(x) glue("./topics/", x))
 ```
 

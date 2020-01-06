@@ -19,7 +19,7 @@ head(mtcars)
 
 <img src="../images/python_logo.png" class="language-icon">
 
-To create new columns, you might be used to created it by assigning a new 'key' to the DataFrame using `[`:
+To create new columns, you might be used assigning a new 'key' to the DataFrame using `[`:
 
 ```{python echo=TRUE, eval=TRUE}
 mtcars['cyl2'] = mtcars.cyl * 2
@@ -32,7 +32,7 @@ mtcars.head()
 mtcars = r.mtcars
 ```
 
-or you can use `assign` in Python passing in keyword arguments:
+or you can use `assign` in Python and pass in keyword arguments representing new columns and their values:
 
 ```{python echo=TRUE, eval=TRUE}
 mtcars.assign(cyl2 = mtcars.cyl*2, cyl4 = mtcars.cyl*4).head()
@@ -132,13 +132,22 @@ mtcars
 Now, let's combine all of our previous knowledge and put those skills to test!
 
 - Modify the **disp** as before with `disp * 0.0163871`.
-- Then, modify let's continue the metric system conversion by dropping **mpg** column and instead creating a new **kpl** which is kilometer per liter. Here's the conversion: `mpg * 0.425144`.
+- Then, let's continue the metric system conversion by dropping **mpg** column and instead creating a new **kpl** which is kilometer per liter. Here's the conversion: `mpg * 0.425144`.
 - Move the **kpl** to become the first column.
 - Finally, drop the **cyl2** and **cyl4** columns.
 
 **Note**: You can let the row names for the cars silently drop and print the whole result (no need for `head`).
 
 ```{r tidy-mutate-drop-exercise, exercise=TRUE, exercise.lines = 10}
+
+
+
+
+
+
+
+
+
 
 ```
 

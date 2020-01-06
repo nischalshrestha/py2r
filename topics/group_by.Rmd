@@ -1,0 +1,266 @@
+---
+title: "mutate"
+output: html_document
+---
+
+## `group_by`
+
+So far we have been using the tidy verbs mostly in isolation for the purpose of learn how each one works. But, it's now time to explore performing operations on groups defined by variables. Using a handy verb called `group_by`, we'll cover how it changes interactions with other verbs as well as how it relates to Python.
+
+```{r echo=TRUE}
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl
+```
+
+### Select
+
+```{r echo=TRUE}
+by_cyl %>% select(group_cols())
+```
+
+
+### Filter
+
+```{r echo=TRUE}
+# for each cyl, give me row of the max disp
+by_cyl %>% filter(disp == max(disp))
+```
+
+### Arrange
+
+**GOTCHA!** Grouped arrange ignores groups:
+
+```{r echo=TRUE}
+by_cyl %>% arrange(desc(disp))
+```
+
+unless you specifically ask:
+
+```{r echo=TRUE}
+by_cyl %>% arrange(desc(wt), .by_group = TRUE)
+```
+
+### Mutate
+
+```{r echo=TRUE}
+by_cyl %>% mutate(rank = min_rank(desc(mpg)))
+```
+
+Let's make it easier to see the effects by moving **rank** up to the front and `arrange`ing by rank.
+
+```{r echo=TRUE}
+# for each cyl, give me row of the max disp
+by_cyl %>% 
+  mutate(rank = min_rank(desc(mpg))) %>% 
+  select(rank, everything()) %>% 
+  arrange(rank, .by_group = TRUE)
+```
+
+Now we can see the rows ordered according to the rank which is in turn based on **mpg** for each **cyl** groups 4, 6, and 8.
+
+
+**GOTCHA!** Note that you can't overwrite grouping variables:
+
+```{r echo=TRUE, eval=FALSE}
+gdf <- mtcars %>% group_by(cyl)
+try(mutate(gdf, cyl = cyl * 100))
+```
+
+Executing this snippet you will see the error:
+
+```
+Error : Column `cyl` can't be modified because it's a grouping variable
+```
+
+
+
+<!-- It's now time to learn how to *transform* columns! Like before, we will compare how to do this with base R versus tidy R's `mutate` verb. Luckily, there are high similarities between Python and R when it comes to transforming columns. -->
+
+<!-- ### Creating new columns -->
+
+<!-- One thing that is common is creating new columns for a dataframe. Let's create some new columns for `mtcars`, **cyl2** and **cyl4** which are simply multiples of the original **cyl** by 2 and 4, respectively. -->
+
+<!-- Here is `mtcars` again: -->
+
+<!-- ```{r} -->
+<!-- head(mtcars) -->
+<!-- ``` -->
+
+<!-- <img src="../images/python_logo.png" class="language-icon"> -->
+
+<!-- To create new columns, you might be used assigning a new 'key' to the DataFrame using `[`: -->
+
+<!-- ```{python echo=TRUE, eval=TRUE} -->
+<!-- mtcars['cyl2'] = mtcars.cyl * 2 -->
+<!-- mtcars['cyl4'] = mtcars.cyl * 4 -->
+<!-- mtcars.head() -->
+<!-- ``` -->
+
+<!-- ```{python include=FALSE} -->
+<!-- # set a python variable to point to mtcars -->
+<!-- mtcars = r.mtcars -->
+<!-- ``` -->
+
+<!-- or you can use `assign` in Python and pass in keyword arguments representing new columns and their values: -->
+
+<!-- ```{python echo=TRUE, eval=TRUE} -->
+<!-- mtcars.assign(cyl2 = mtcars.cyl*2, cyl4 = mtcars.cyl*4).head() -->
+<!-- ``` -->
+
+<!-- ```{python include=FALSE} -->
+<!-- mtcars = r.mtcars -->
+<!-- ``` -->
+
+<!-- <img src="../images/r_logo.png" class="language-icon"> -->
+
+<!-- Similar to Python, there are two ways we could approach this in R. -->
+
+<!-- First let's look at the base R way. Like Python, you can use the `[`: -->
+
+<!-- ```{r base-mutate, exercise=TRUE, exercise.lines = 3} -->
+<!-- mtcars$cyl2 = mtcars$cyl * 2 -->
+<!-- mtcars$cyl4 = mtcars$cyl * 4 -->
+<!-- head(mtcars) -->
+<!-- ``` -->
+
+<!-- ### Enter `mutate` -->
+
+<!-- If you squint, the syntax for `mutate` below looks almost like Python's `assign` except in R, we don't even have to reference the columns directly using `$`: -->
+
+<!-- ```{r tidy-mutate, exercise=TRUE, exercise.lines = 3} -->
+<!-- mtcars %>% mutate(cyl2 = cyl * 2, cyl4 = cyl * 4) %>% head() -->
+<!-- ``` -->
+
+<!-- ### Modify or remove existing columns -->
+
+<!-- We might also want to modify or remove existing columns. For example, let's drop the **mpg** and adopt the metric system by converting the **disp** column from cubic inch to liters. -->
+
+<!-- <img src="../images/python_logo.png" class="language-icon"> -->
+
+<!-- Again, in Python there are a couple of ways we could do this. To drop a column, one could've used the `drop` but another simple way is to simply delete the column key using `[`: -->
+
+<!-- ```{python echo=TRUE, eval=TRUE} -->
+<!-- del mtcars['mpg'] -->
+<!-- mtcars.head() -->
+<!-- ``` -->
+
+<!-- ```{python include=FALSE} -->
+<!-- mtcars = r.mtcars -->
+<!-- ``` -->
+
+<!-- Then, for modification we can either use `[` or overwrite **disp** using `assign`: -->
+
+<!-- ```{python echo=TRUE, eval=TRUE} -->
+<!-- mtcars['disp'] = mtcars.disp * 0.0163871 -->
+<!-- ``` -->
+
+<!-- ```{python include=FALSE} -->
+<!-- mtcars = r.mtcars -->
+<!-- ``` -->
+
+<!-- or use `assign`: -->
+
+<!-- ```{python echo=TRUE, eval=TRUE} -->
+<!-- mtcars.assign(disp = mtcars.disp * 0.0163871).head() -->
+<!-- ``` -->
+
+<!-- <img src="../images/r_logo.png" class="language-icon"> -->
+
+<!-- Like Python, there are two ways we can drop a column in R. One is using the `select` verb and the other is setting `[`. One difference using the `[` for R is one simply needs to set the column to `null`: -->
+
+<!-- First let's look at the base R way. Like Python, you can use the `[` to delete a column: -->
+
+<!-- ```{r base-mutate-modify, exercise=TRUE, exercise.lines = 3} -->
+<!-- mtcars$mpg <- NULL -->
+<!-- mtcars$disp <- mtcars$disp * 0.0163871 -->
+<!-- head(mtcars) -->
+<!-- ``` -->
+
+<!-- ```{r include=FALSE} -->
+<!-- mtcars = py$mtcars -->
+<!-- mtcars -->
+<!-- ``` -->
+
+<!-- But unlike Python's `assign`, we can use our `mutate` to both drop and modify columns: -->
+
+<!-- ```{r tidy-mutate-modify, exercise=TRUE, exercise.lines = 3} -->
+<!-- mtcars %>% mutate(mpg = NULL, disp = disp * 0.0163871) %>% head() -->
+<!-- ``` -->
+
+<!-- Now that you've become a bit familiar with `mutate` let's bring back the `mtcars` before the dropping of **mpg** and conversion of **disp**: -->
+
+<!-- ```{r include=FALSE, eval=TRUE} -->
+<!-- mtcars = py$mtcars -->
+<!-- mtcars -->
+<!-- ``` -->
+
+<!-- ```{r eval=TRUE} -->
+<!-- mtcars -->
+<!-- ``` -->
+
+<!-- Now, let's combine all of our previous knowledge and put those skills to test! -->
+
+<!-- - Modify the **disp** as before with `disp * 0.0163871`. -->
+<!-- - Then, let's continue the metric system conversion by dropping **mpg** column and instead creating a new **kpl** which is kilometer per liter. Here's the conversion: `mpg * 0.425144`. -->
+<!-- - Move the **kpl** to become the first column. -->
+<!-- - Finally, drop the **cyl2** and **cyl4** columns. -->
+
+<!-- **Note**: You can let the row names for the cars silently drop and print the whole result (no need for `head`). -->
+
+<!-- ```{r tidy-mutate-drop-exercise, exercise=TRUE, exercise.lines = 10} -->
+
+
+
+
+
+
+
+
+
+
+<!-- ``` -->
+
+<!-- ```{r tidy-mutate-drop-exercise-hint-1} -->
+<!-- "You could do this in a chain of piped calls using %>%" -->
+<!-- ``` -->
+
+<!-- ```{r tidy-mutate-drop-exercise-hint-2} -->
+<!-- "The order of modifying and adding new columns is very important!" -->
+<!-- ``` -->
+
+<!-- ```{r tidy-mutate-drop-exercise-hint-3} -->
+<!-- "The topic of `select` and the utility function `everything()` is especially handy in this situation." -->
+<!-- ``` -->
+
+<!-- ```{r tidy-mutate-drop-exercise-hint-4} -->
+<!-- "If you're having difficulty putting chained calls in one line, break up by placing each verb in a new line and indenting them like so:" -->
+
+<!-- mtcars %>% -->
+<!--   verb1(...) %>% -->
+<!--   verb2(...) %>% -->
+<!-- ``` -->
+
+<!-- ```{r tidy-mutate-drop-exercise-check} -->
+<!-- grade_result( -->
+<!--   pass_if(~ identical( -->
+<!--     ., -->
+<!--     mtcars %>% -->
+<!--       mutate( -->
+<!--         kpl = mpg * 0.425144, -->
+<!--         disp = disp * 0.0163871, -->
+<!--         mpg = NULL, -->
+<!--         cyl2 = NULL, -->
+<!--         cyl4 = NULL -->
+<!--       ) %>% -->
+<!--       select(kpl, everything()) -->
+<!--     ), -->
+<!--   "Holy moly! You did it! :)") -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- You're really getting the hang of this and the tidyverse way of programming in R. Now you can now transform columns of a dataframe! -->
+
+<!-- #### If you want to learn more: -->
+
+<!-- There are more advanced things you can do with `mutate` and there is another related verb called `transmute` which we didn't cover (it's like `mutate` but drops other columns). Check out the [docs](https://dplyr.tidyverse.org/reference/mutate.html) for detail. -->
+

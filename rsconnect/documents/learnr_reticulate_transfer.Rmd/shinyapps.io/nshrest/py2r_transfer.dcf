@@ -5,9 +5,9 @@ account: nshrest
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1628636
-bundleId: 2708423
+bundleId: 2708655
 url: https://nshrest.shinyapps.io/py2r_transfer/
-when: 1578274906.67154
+when: 1578287856.22362
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: .RData|playground.R|sample_template.html|sample_template.Rmd|test.yaml|css/.DS_Store|sample_template_data/data_chunks_index.txt
