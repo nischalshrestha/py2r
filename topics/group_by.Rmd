@@ -5,45 +5,154 @@ output: html_document
 
 ## `group_by`
 
-So far we have been using the tidy verbs mostly in isolation for the purpose of learn how each one works. But, it's now time to explore performing operations on groups defined by variables. Using a handy verb called `group_by`, we'll cover how it changes interactions with other verbs as well as how it relates to Python.
+So far we have been using the tidy verbs to explore the `mtcars` dataframe but we haven't really organized it in terms of a **group** of one or more variables. We'll cover how to do that here.
+
+### Grouping a dataframe by a variable
+
+Let's group `mtcars` by **cyl** and store the result in a variable called `by_cyl`.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python, we can group a dataframe with a variable using `groupby`:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl = mtcars.groupby('cyl')
+print(by_cyl.head())
+```
+Note how printing the resulting `DataFrameGroupBy` object named `by_cyl` does not *appear* any different from the original dataframe.
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, we can use the verb `group_by` to do the same thing. Notice how syntactically similar it is to Python's `groupby`:
 
 ```{r group_by-mtcars, echo=TRUE, exercise=TRUE, exercise.lines=3}
 by_cyl <- mtcars %>% group_by(cyl)
 by_cyl
 ```
+One side-effect of using `group_by` is that the rownames have been silently ignored, but we can always bring that back if we want:
 
-```{r include=FALSE, context="data"}
-by_cyl <- mtcars %>% group_by(cyl)
+```{r echo=TRUE, context="data"}
+by_cyl <- mtcars %>% group_by(cyl) %>% rownames_to_column()
+by_cyl
 ```
 
+Like Python, R doesn't yet reflect any change in the resulting dataframe when printing.
 
-### Slice
+### Operations on a grouped dataframe
 
-When using `slice` on grouped data, we can retrieve the rows for each **cyl** group. Here we grab 3 rows for each:
+The real magic of the resulting object for both Python and R begins when performing operations on it.
 
-```{r group_by-slice, echo=TRUE, exercise=TRUE, exercise.lines=3}
-slice(by_cyl, 1:3)
+#### Slice
+
+What if we wanted to slice the resulting grouped dataframe? Let's try to select the first 2 groups based on **cyl**.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+When we want to slice rows of the `GroupBy` object, we have two options in Python.
+
+We can use `head(n)` with some *n* which returns the number of grouped rows we want. For example, if we pass a 1 we would get the first group, i.e. the first set of rows that have 4.0, 6.0 and 8.0 **cyl**. Here's `head(2)`:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl.head(2)
 ```
 
+Alternately, we could have also used `take` instead and pass in the positional indices.
 
-
-### Select
-
-```{r group_by-select, echo=TRUE, exercise=TRUE, exercise.lines=3}
-by_cyl %>% select(group_cols())
+```{python echo=TRUE, eval=TRUE}
+by_cyl.take([0, 1])
 ```
 
+<img src="../images/r_logo.png" class="language-icon">
 
-### Filter
+Let's see what happens if we use R's `head`:
+
+```{r group_by-slice-head, echo=TRUE, exercise=TRUE, exercise.lines=3}
+ head(by_cyl, 2)
+```
+
+**Python ⇒ R GOTCHA!** Unlike Python, R's `head` on a grouped dataframe will simply return the number of rows of the dataframe, **NOT** groups of the variable(s)!
+
+If we wanted to mimic Python's `head`, we would instead use the `slice` verb. Here we grab 2 groups:
+
+```{r group_by-slice-slice, echo=TRUE, exercise=TRUE, exercise.lines=3}
+slice(by_cyl, 1:2)
+```
+
+From this, it would seem that `slice` bears more resemblance to Python's `head` than `take` except that `slice` requires a range.
+
+However, watch what happens if you we had just supplied 2 to `slice`:
+
+```{r group_by-slice-single, echo=TRUE, exercise=TRUE, exercise.lines=3}
+slice(by_cyl, 2)
+```
+**Python ⇒ R: GOTCHA!**  Unlike Python's `head`, supplying a number for R's `slice` on a grouped dataframe will return the group corresponding to the positional index supplied, **NOT** groups of the variable(s)!
+
+The `slice` now behaves like Python's `take`:
+
+```{r group_by-slice-single-2, echo=TRUE, exercise=TRUE, exercise.lines=3}
+slice(by_cyl, c(1, 2))
+```
+
+Look familiar?
+
+<img src="../images/python_logo.png" class="language-icon">
+```{python echo=TRUE, eval=TRUE}
+by_cyl.take([0, 1])
+```
+
+So, if you want to mimic Python's `head` on a grouped dataframe, use R's `slice` with a range. But, if you want to mimic Python's `take`, you can use the `slice` verb and supply either a single positional index or a list of indices using `c()`.
+
+To stay consistent, we'll just use `take` for the Python and `slice` for R from here on out.
+
+#### Select
+
+What if we wanted to select the **mpg** and the **disp** columns on the grouped dataframe?
+
+<img src="../images/python_logo.png" class="language-icon">
+
+To select rows of the `GroupBy` in Python, we can use the `[[`. But, we would have to use take so that **cyl** gets included in the result. We'll print the first two groups like before:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl[['mpg', 'disp']].take([0,1])
+```
+Python doesn't retain the **cyl** group variable when using `head` even though it's there internally so we use `take`.
+
+<img src="../images/r_logo.png" class="language-icon">
+
+We can use R's `select` verb on grouped data to select columns. No big surprises here:
+
+```{r group_by-select-simple, echo=TRUE, exercise=TRUE, exercise.lines=5}
+by_cyl %>%
+  select(mpg) %>%
+  slice(1:2)
+```
+Unlike Python, R notices that you are operating on a grouped dataframe, so it includes the **cyl** even if not explicitly selecting it. But, we can also explicitly select with a convenience function in `dplyr` called `group_cols`:
+
+```{r group_by-select-grouped, echo=TRUE, exercise=TRUE, exercise.lines=5}
+by_cyl %>%
+  select(group_cols(), mpg) %>%
+  slice(1:2)
+```
+
+If we want to keep the rownames, it takes a bit more typing but it can be done. You need to start a fresh tidy chain from `mtcars` and repeat the `group_by` unfortunately:
+
+```{r group_by-select-group, echo=TRUE, exercise=TRUE, exercise.lines=6}
+mtcars %>%
+  group_by(cyl) %>%
+  select(group_cols(), mpg) %>%
+  rownames_to_column()
+```
+
+#### Filter
 
 ```{r group_by-filter, echo=TRUE, exercise=TRUE, exercise.lines=3}
 # for each cyl, give me row of the max disp
 by_cyl %>% filter(disp == max(disp))
 ```
 
-### Arrange
+#### Arrange
 
-**GOTCHA!** Grouped arrange ignores groups:
+**Base R ⇒ Tidy R: GOTCHA!** Grouped arrange ignores groups:
 
 ```{r group_by-arrange-nogroup, echo=TRUE, exercise=TRUE, exercise.lines=3}
 by_cyl %>% arrange(desc(disp))
@@ -55,7 +164,7 @@ unless you specifically ask:
 by_cyl %>% arrange(desc(wt), .by_group = TRUE)
 ```
 
-### Mutate
+#### Mutate
 
 ```{r group_by-mutate-simple, echo=TRUE, exercise=TRUE, exercise.lines=3}
 by_cyl %>% mutate(rank = min_rank(desc(mpg)))
