@@ -5,62 +5,181 @@ output: html_document
 
 ## `summarize`
 
+Now that we have covered some of the most fundamental verbs in Tidy R, we will bring it all together in this last topic by covering `summarize` to collapse a dataframe into meaninful stats. `summarize` is synonymous with `summarise`, calling either one will work but we'll stick with the "z".
+
 ### Summarize ungrouped dataframe
 
-<!-- # A summary applied to ungrouped tbl returns a single row -->
-```{r summarize, echo=TRUE, exercise=TRUE, exercise.lines=4}
-mtcars %>%
-  summarize(mean = mean(disp), n = n())
+Let's start by summarizing the `mtcars` dataframe which will simply report on the mean of **disp**  and how many instances of **disp** there are per group. For now we don't have any groups, so it will be the entire `mtcars`.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python, we can do aggregate type calculations with `agg` which accepts a dict where the key is the column name and the value is the operation:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.agg({'disp': ['mean', 'count']}).shape
 ```
+No surprises here. The **disp** column's mean and the number of observations (rows) per group, which is 1 (the entire dataframe) is 32 because there are 32 observations.
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, we can use the verb `summarize`:
+
+```{r summarize, echo=TRUE, exercise=TRUE, exercise.lines=4}
+mtcars %>% summarize(mean = mean(disp), n = n())
+```
+There you have it! The only difference here is that the dataframe is a single row unlike two rows in Python.
 
 ### Summarize grouped dataframe
-<!-- # Usually, you'll want to group first -->
-```{r group_by-summarize, echo=TRUE, exercise=TRUE, exercise.lines=5}
-mtcars %>%
-  group_by(cyl) %>%
-  summarize(mean = mean(disp), n = n())
+
+Often times though, you will want to first group the dataframe with a variable(s) before performing the aggregated operation(s). So, let's first group by **cyl** like we did in the previous topic. Then, let's do the same stats as above.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+We can use Python's `groupby` first then use `agg`:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl = mtcars.groupby('cyl')
+by_cyl.agg({'disp': ['mean', 'count']})
+print(f"\nGroups: {len(by_cyl.groups)}")
 ```
 
-### Peeling off variables
-<!-- GOTCHA! -->
-<!-- # Each summary call removes one grouping level (since that group -->
-<!-- # is now just a single row) -->
-```{r group_by-summarize-unlevel, echo=TRUE, exercise=TRUE, exercise.lines=6}
+Pay attention to the output of that print statement, we'll circle back to that after you see the R side.
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, we first use `group_by` and then we use `summarize` as before:
+
+<!-- # Usually, you'll want to group first -->
+```{r group_by-summarize, echo=TRUE, exercise=TRUE, exercise.lines=4}
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl %>% summarize(mean = mean(disp), n = n())
+
+```
+
+Whala! Again, the results are the same as expected except for the dimensions of the returning dataframe. 
+
+However, let's see what happens when we store the resulting dataframe and call a `group_vars` on it. `group_vars` essentially prints out the grouping variables of the dataframe. Execute the code below to see what happens:
+
+```{r group_by-summarize-ungrouped, echo=TRUE, exercise=TRUE, exercise.lines=6}
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl <- by_cyl %>% summarize(mean = mean(disp), n = n())
+by_cyl
+by_cyl %>% group_vars()
+```
+We have our result of the `summarize` but also notice how we get an empty vector of type `character`. 
+
+**Python ⇒ R GOTCHA!** Unlike Python's `agg`, R's `summarize` automatically ungroups one level of the grouped dataframe! This is because that group is now just a single row.
+
+This means in the above example we had one grouped variable: **cyl**. This effectively gets stripped when using `summarize` so that we no longer consider the dataframe to be grouped.
+
+So are we doomed to also ungroup after `summarize`? When using `summarize`, pretty much. But there's a solution. If you want to keep the original grouped variables use `mutate` instead:
+
+```{r group_by-summarize-group_vars, echo=TRUE, exercise=TRUE, exercise.lines=6}
+by_cyl <- mtcars %>% group_by(cyl)
+by_cyl <- by_cyl %>% mutate(mean = mean(disp), n = n())
+by_cyl
+by_cyl %>% group_vars()
+```
+Note how the **cyl** gets printed from `group_vars`, which means anything else we do will still consider the dataframe to be grouped.
+
+### Multiple columns/variables
+
+One thing we haven't yet done is group by multiple variables. We will now group by both **cyl** and **vs** (Engine (0 = V-shaped, 1 = straight)) and calculate the mean of the **disp** and **mpg** variables.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+As before, we use Python's `groupby` first this time supplying a list of the variables. Then use `agg` to calculate count:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl_vs = mtcars.groupby(['cyl', 'vs'])
+by_cyl_vs.agg({'disp': 'mean', 'mpg': 'mean'})
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+We do the same as last time but add the **vs** column to group by, then `summarize`:
+
+```{r group_by-summarize-multiple-variables, echo=TRUE, exercise=TRUE, exercise.lines=5}
 mtcars %>%
   group_by(cyl, vs) %>%
-  summarize(cyl_n = n()) %>%
-  group_vars()
+  summarize(mean_disp = mean(disp), mean_mpg = mean(mpg))
+
 ```
 
+The above operation still ungroups, but just one level. Here is the same code this time saving the resulting dataframe to reveal what grouped variables are left with `group_vars`:
 
-<!-- ```{r group_by-mutate-chained-exercise, echo=TRUE, exercise=TRUE, exercise.lines=6} -->
+```{r group_by-summarize-multiple-variables-stripped, echo=TRUE, exercise=TRUE, exercise.lines=6}
+# storing way
+by_cyl <- mtcars %>% group_by(cyl, vs)
+by_cyl <- by_cyl %>% summarize(mean_disp = mean(disp), mean_mpg = mean(mpg))
+by_cyl
+by_cyl %>% group_vars()
+```
+Notice how we only print **cyl** even though originally we also had **vs**, which got stripped away after the `summarize`!
 
-<!-- ``` -->
+If we wanted to add one more function call a `select` we will no longer consider **vs** as a grouping variable. The first `select` here selects the **vs** which is still present:
 
-<!-- ```{r group_by-mutate-chained-exercise-hint-1} -->
-<!-- "Use a chain of piped calls using %>%" -->
-<!-- ``` -->
+```{r group_by-summarize-multiple-variables-stripped-attempt-1, echo=TRUE, exercise=TRUE, exercise.lines=8, warning=FALSE}
+# storing way
+by_cyl <- mtcars %>% group_by(cyl, vs)
+by_cyl %>% 
+  summarize(mean_disp = mean(disp), mean_mpg = mean(mpg)) %>%
+  select(vs)
 
-<!-- ```{r group_by-mutate-chained-exercise-hint-2} -->
-<!-- "Don't forget about that gotcha on `arrange`!" -->
-<!-- ``` -->
 
-<!-- ```{r group_by-mutate-chained-exercise-check} -->
-<!-- grade_result( -->
-<!--   pass_if(~ identical( -->
-<!--     ., -->
-<!--     by_cyl %>%  -->
-<!--       mutate(rank = min_rank(desc(mpg))) %>%  -->
-<!--       select(rank, everything()) %>%  -->
-<!--       arrange(rank, .by_group = TRUE) -->
-<!--     ) -->
-<!--   ) -->
-<!-- ) -->
-<!-- ``` -->
+```
+We can use `ungroup` if we don't want to manually remove the next group level which is **cyl** in this case. Execute the code below to see what happens when we select **vs** after the `ungroup`:
 
-Well done! This concludes Dataframes Basics going from Python to R.
+```{r group_by-summarize-multiple-variables-stripped-attempt-2, echo=TRUE, exercise=TRUE, exercise.lines=8}
+by_cyl <- mtcars %>% group_by(cyl, vs)
+by_cyl %>% 
+  summarize(mean_disp = mean(disp), mean_mpg = mean(mpg)) %>%
+  ungroup() %>% 
+  select(vs)
+  
+```
+This time we only get the **vs** column back without the **cyl**.
+
+Let's do one final exercise to wrap up the `summarize` topic:
+
+- Group mtcars by **cyl** and **gear**
+- Summarize the following:
+  - mean of **disp** to a "mean_disp" column
+  - max of **hp** to a "max_hp" column (use `max` function)
+
+```{r group_by-summarize-exercise, echo=TRUE, exercise=TRUE, exercise.lines=6}
+
+```
+
+```{r group_by-summarize-exercise-hint-1}
+mtcars %>%
+    group_by(...) %>%
+    summarize(...)
+```
+
+```{r group_by-summarize-exercise-check}
+grade_result(
+  pass_if(~ identical(
+    .,
+    mtcars %>%
+      group_by(cyl, gear) %>%
+      summarize(mean_disp = mean(disp), max_hp = max(hp))
+    )
+  )
+)
+```
+
+Well done! This concludes a whirlwind tour of dataframes basics going from Python to R. Hope you learned a lot! If you have any further questions or spot any mistakes, please email me at: nshrest AT ncsu.edu
 
 #### If you want to learn more:
 
-There are more advanced things you can do with `group_by` and `summarize` which you can check out in the [docs](https://dplyr.tidyverse.org/reference/group_by.html).
+There are more advanced things you can do with `group_by` and `summarize` which you can check out in the [docs](https://dplyr.tidyverse.org/reference/group_by.html). The entire [reference](https://dplyr.tidyverse.org/index.html) is also a great resource for the rest of your journeys manipulating and wrangling dataframes. 
+
+### Where to go next?
+
+Your journey has just begun. There is a lot that we didn't cover about other aspects of analysis like plotting and all the ways to read data. A couple of resources:
+
+- The R4DS [book](https://r4ds.had.co.nz) 
+- There is also the [R4DS](https://www.rfordatasci.com) community, highly recommend their slack!
+- Also feel free to reach out to the #rstats community on Twitter with a question, they are quite active and willing to help out!
 
