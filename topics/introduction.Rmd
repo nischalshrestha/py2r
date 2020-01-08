@@ -5,4 +5,16 @@ output: html_document
 
 ## Introduction
 
-In this (very) short guide, we're going to cover some key concepts using dataframes in R by relating it to the language you are comfortable with, Python. Think of this as an interactive tutorial document, where you are going to read some text but most importantly, you are going to make use of a lot of "learning by doing" and play with code to reinforce the concepts. We shall use the **mtcars** dataset available in R throughout the tutorial.
+### What is this?
+
+This is a (very) short guide where you will learn about dataframes in R and how to wrangle them. This document is different from others. First, it is interactive which means you will get to execute code as you follow along each topic. Second, it presents R from the perspective of a Python programmer and possible gotchas you need to watch out for as you begin your R journey.
+
+### What am I going to learn?
+
+This guide is made up of 11 topics around dataframe manipulation. We begin with the basics of R dataframes with base R---what you get from the get-go in R. Then, we spend a large portion covering a new style of programming called tidy R, introduced by the [tidyverse](https://www.tidyverse.org) packages, a style that provides improvements to base R.
+
+### How am I going to learn?
+
+You are going to read some text to learn facts about R and its widely used operations and functions, but most importantly, you are going to make use of a lot of "learning by doing". Learning happens best when applying what you have learned, so each topic will contain mini code exercises where you can write and execute R code! This can help reinforce the concepts covered in each topic.
+
+You can choose to go in order or skip around topics. All exercises can be skipped as well. Throughout the topics, we shall use the **mtcars** dataset available in R.
