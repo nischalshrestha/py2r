@@ -42,7 +42,8 @@ child_docs <- c("introduction.Rmd",
                 "filter.Rmd",
                 "arrange.Rmd",
                 "mutate.Rmd",
-                "group_by.Rmd")
+                "group_by.Rmd",
+                "summarize.Rmd")
 child_docs <- map_chr(child_docs, function(x) glue("./topics/", x))
 ```
 

@@ -87,7 +87,7 @@ mtcars[cols].head()
 
 <img src="../images/r_logo.png" class="language-icon">
 
-In R, you could do it in base-R, but this makes it quite confusing and suffers the same issue as Python in that you can to keep track of what the index was for each column.
+In R, you could do it in base-R, but this makes it quite confusing and suffers the same issue as Python in that you have to keep track of what the index was for each column.
 
 ```{r select-base-reorder, echo=TRUE, exercise=TRUE, exercise.lines=3}
 total <- ncol(mtcars)

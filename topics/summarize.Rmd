@@ -1,0 +1,66 @@
+---
+title: "summarize"
+output: html_document
+---
+
+## `summarize`
+
+### Summarize ungrouped dataframe
+
+<!-- # A summary applied to ungrouped tbl returns a single row -->
+```{r summarize, echo=TRUE, exercise=TRUE, exercise.lines=4}
+mtcars %>%
+  summarize(mean = mean(disp), n = n())
+```
+
+### Summarize grouped dataframe
+<!-- # Usually, you'll want to group first -->
+```{r group_by-summarize, echo=TRUE, exercise=TRUE, exercise.lines=5}
+mtcars %>%
+  group_by(cyl) %>%
+  summarize(mean = mean(disp), n = n())
+```
+
+### Peeling off variables
+<!-- GOTCHA! -->
+<!-- # Each summary call removes one grouping level (since that group -->
+<!-- # is now just a single row) -->
+```{r group_by-summarize-unlevel, echo=TRUE, exercise=TRUE, exercise.lines=6}
+mtcars %>%
+  group_by(cyl, vs) %>%
+  summarize(cyl_n = n()) %>%
+  group_vars()
+```
+
+
+<!-- ```{r group_by-mutate-chained-exercise, echo=TRUE, exercise=TRUE, exercise.lines=6} -->
+
+<!-- ``` -->
+
+<!-- ```{r group_by-mutate-chained-exercise-hint-1} -->
+<!-- "Use a chain of piped calls using %>%" -->
+<!-- ``` -->
+
+<!-- ```{r group_by-mutate-chained-exercise-hint-2} -->
+<!-- "Don't forget about that gotcha on `arrange`!" -->
+<!-- ``` -->
+
+<!-- ```{r group_by-mutate-chained-exercise-check} -->
+<!-- grade_result( -->
+<!--   pass_if(~ identical( -->
+<!--     ., -->
+<!--     by_cyl %>%  -->
+<!--       mutate(rank = min_rank(desc(mpg))) %>%  -->
+<!--       select(rank, everything()) %>%  -->
+<!--       arrange(rank, .by_group = TRUE) -->
+<!--     ) -->
+<!--   ) -->
+<!-- ) -->
+<!-- ``` -->
+
+Well done! This concludes Dataframes Basics going from Python to R.
+
+#### If you want to learn more:
+
+There are more advanced things you can do with `group_by` and `summarize` which you can check out in the [docs](https://dplyr.tidyverse.org/reference/group_by.html).
+
