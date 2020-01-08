@@ -141,7 +141,7 @@ or using list:
 select(mtcars, -c(mpg, hp)) %>% head()
 ```
 
-**GOTCHA!** Using `-` to drop columns using labels is also not possible in base R:
+**Base R ⇒ Tidy R GOTCHA!** Using `-` to drop columns using labels is not possible in base R:
 
 ```{r echo=TRUE, eval=FALSE}
 mtcars[, -c('mpg', 'hp')]

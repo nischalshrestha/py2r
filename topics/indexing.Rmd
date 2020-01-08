@@ -45,7 +45,7 @@ grade_result(
 )
 ```
 
-**GOTCHA!** Using the `.` notation to reference a column does not work in R. Try executing `mtcars.mpg`
+**Python ⇒ R GOTCHA!** Using the `.` notation to reference a column does not work in R. Try executing `mtcars.mpg`
 
 ```{r wrong-reference, exercise = TRUE, exercise.lines = 2, echo=TRUE}
 
@@ -102,7 +102,7 @@ grade_result(
 
 You may wonder why we didn't use the `[` syntax instead.
 
-**GOTCHA!** Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
+**Python ⇒ R GOTCHA!** Using `[` returns a dataframe, so accessing the fifth element will throw an error because you have only one column **mpg** returned. See for yourself!
 
 ```{r single-check-wrong, exercise = TRUE, exercise.lines = 3, exercise.eval = TRUE}
 
@@ -254,26 +254,4 @@ grade_result(
 ```
 
 You made it across the field! Now, on to bigger things.
-
-<!--     - indexing: -->
-<!--         - title: "How do I index rows and columns?" -->
-<!--         - subtopic:  -->
-<!--           - title: "Index column(s)" -->
-<!--           - source:  -->
-<!--             - "mtcars['mpg']" -->
-<!--             - "mtcars.mpg" -->
-<!--           - target: -->
-<!--             - "mtcars['mpg']" -->
-<!--             - "mtcars$mpg" -->
-<!--             - "mtcars[['mpg', 'cyl]]" -->
-<!--         - subtopic: -->
-<!--           - title: "Index row(s)" -->
-<!--           - source:  -->
-<!--             - "mtcars[0:1]" -->
-<!--           - target: -->
-<!--             - "mtcars[0:1]" -->
-<!--             - "mtcars[1:2]" -->
-
-
-
 

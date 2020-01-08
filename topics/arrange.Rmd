@@ -93,7 +93,7 @@ arrange(mtcars, desc(mpg))
 
 The `-` and `desc` do the same thing but the latter is clearer in intention.
 
-**GOTCHA!** If you haven't noticed yet, unlike the `order` function used in base R, the rownames are silently dropped when using `arrange`. As mentioned before, if row names are important to you, use the `rownames_to_column()` function.
+**Base R ⇒ Tidy R GOTCHA!** If you haven't noticed yet, unlike the `order` function used in base R, the rownames are silently dropped when using `arrange`. As mentioned before, if row names are important to you, use the `rownames_to_column()` function.
 
 Let's do that now. Go ahead and use `rownames_to_column()` on `mtcars`, then make use of that `%>%` to pipe the result to `arrange`, sorting by **mpg** descending order. Finally, pipe the result to a `head` as we only want to gander at the first few rows:
 

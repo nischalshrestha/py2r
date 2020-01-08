@@ -7,11 +7,11 @@ output: html_document
 
 ### What is this?
 
-This is a (very) short guide where you will learn about dataframes in R and how to wrangle them. This document is different from others. First, it is interactive which means you will get to execute code as you follow along each topic. Second, it presents R from the perspective of a Python programmer and possible gotchas you need to watch out for as you begin your R journey.
+This is a short guide for Python programmers on handling dataframes in R. This document is interactive which means you will get to execute code as you follow along each topic. It also presents R from the perspective of a Python programmer and possible gotchas you need to watch out for as you begin your R journey.
 
 ### What am I going to learn?
 
-This guide is made up of 11 topics around dataframe manipulation. We begin with the basics of R dataframes with base R---what you get from the get-go in R. Then, we spend a large portion covering a new style of programming called tidy R, introduced by the [tidyverse](https://www.tidyverse.org) packages, a style that provides improvements to base R.
+This guide is made up of 11 topics around dataframe manipulation. We begin with the basics of R dataframes with base R---what you get from the R without additional packages. Then, we spend a large portion covering a new style of programming called tidy R, introduced by the [tidyverse](https://www.tidyverse.org) packages. Tidy R is a style that provides some usability improvements to base R.
 
 ### How am I going to learn?
 

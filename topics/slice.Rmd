@@ -37,7 +37,7 @@ However, execute the same operation in R:
 df[1:10, ]
 ```
 
-**GOTCHA!** You should see some extra rows full of missing values or `NA`s. 
+**Python ⇒ R GOTCHA!** In R, if you slice for more rows than there are in a dataframe, extra rows full of missing values or `NA`s will be added!
 
 This results from a concept called [vector recycling](https://r4ds.had.co.nz/vectors.html#scalars-and-recycling-rules). In a nutshell, R prefers performing operations on equal sized vectors and will "recycle" the shorter one to meet the length of the bigger one---fair enough! The shorter vector in our case is the number of rows `df` has which we know to be 3:
 
