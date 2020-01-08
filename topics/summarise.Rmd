@@ -1,0 +1,43 @@
+---
+title: "summarise"
+output: html_document
+---
+
+## `summarise`
+
+TODO 
+
+
+```{r group_by-mutate-chained-exercise, echo=TRUE, exercise=TRUE, exercise.lines=6}
+
+```
+
+```{r group_by-mutate-chained-exercise-hint-1}
+"Use a chain of piped calls using %>%"
+```
+
+```{r group_by-mutate-chained-exercise-hint-2}
+"Don't forget about that gotcha on `arrange`!"
+```
+
+```{r group_by-mutate-chained-exercise-check}
+grade_result(
+  pass_if(~ identical(
+    .,
+    by_cyl %>% 
+      mutate(rank = min_rank(desc(mpg))) %>% 
+      select(rank, everything()) %>% 
+      arrange(rank, .by_group = TRUE)
+    )
+  )
+)
+```
+
+Once you've done that we can clearly see the rows ordered according to the rank which is in turn based on **mpg** for each **cyl** groups 4, 6, and 8.
+
+For most data operations, we operate on groups of variables, so `group_by` is an important addition to our arsenal! This will now set us up for performing basic statistics on the data on the next topic with a new verb called `summarise`.
+
+#### If you want to learn more:
+
+There are more advanced things you can do with `group_by`. For example, we didn't cover some of the variantes of `group_by` like TODO. Check out the [docs](https://dplyr.tidyverse.org/reference/group_by.html) for detail.
+

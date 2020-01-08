@@ -1,11 +1,11 @@
 ---
-title: "mutate"
+title: "group_by"
 output: html_document
 ---
 
 ## `group_by`
 
-So far we have been using the tidy verbs to explore the `mtcars` dataframe but we haven't really organized it in terms of a **group** of one or more variables. We'll cover how to do that here.
+So far we have been using the tidy verbs to explore the `mtcars` dataframe but we haven't really organized it in terms of a **group** of one or more variables. We'll cover how to do that here. Hold on to your seatbelts! There is a good amount of ground to cover here but it's important to lay down before moving on to the next verb.
 
 ### Grouping a dataframe by a variable
 
@@ -42,7 +42,7 @@ Like Python, R doesn't yet reflect any change in the resulting dataframe when pr
 
 The real magic of the resulting object for both Python and R begins when performing operations on it.
 
-#### Slice
+#### Slice rows
 
 What if we wanted to slice the resulting grouped dataframe? Let's try to select the first 2 groups based on **cyl**.
 
@@ -104,7 +104,7 @@ So, if you want to mimic Python's `head` on a grouped dataframe, use R's `slice`
 
 To stay consistent, we'll just use `take` for the Python and `slice` for R from here on out.
 
-#### Select
+#### Select columns
 
 What if we wanted to select the **mpg** and the **disp** columns on the grouped dataframe?
 
@@ -123,14 +123,14 @@ We can use R's `select` verb on grouped data to select columns. No big surprises
 
 ```{r group_by-select-simple, echo=TRUE, exercise=TRUE, exercise.lines=5}
 by_cyl %>%
-  select(mpg) %>%
+  select(mpg, disp) %>%
   slice(1:2)
 ```
 Unlike Python, R notices that you are operating on a grouped dataframe, so it includes the **cyl** even if not explicitly selecting it. But, we can also explicitly select with a convenience function in `dplyr` called `group_cols`:
 
 ```{r group_by-select-grouped, echo=TRUE, exercise=TRUE, exercise.lines=5}
 by_cyl %>%
-  select(group_cols(), mpg) %>%
+  select(group_cols(), mpg, disp) %>%
   slice(1:2)
 ```
 
@@ -143,22 +143,55 @@ mtcars %>%
   rownames_to_column()
 ```
 
-#### Filter
+However, slicing and selecting columns on grouped dataframes isn't all that interesting. Let's look at what else we can do.
+
+#### Filter rows
+
+More interestingly, we can also filter the grouped data. Let's filter for rows where we get the max **disp** (displacement or volume of all the cylinders) for each **cyl**.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+We can use the `idxmax` in Python to first find the max **disp** for each group, then use `loc` to index those particular rows from `mtcars`:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.loc[by_cyl.disp.idxmax()]
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+In R, we can simply pipe the grouped dataframe to `filter` and filter for those rows where **disp** is the max.
 
 ```{r group_by-filter, echo=TRUE, exercise=TRUE, exercise.lines=3}
 # for each cyl, give me row of the max disp
 by_cyl %>% filter(disp == max(disp))
 ```
+Unlike Python, we didn't have to bring back the `mtcars` to perform the filtering. The other small difference in output here is that R does not sort by **cyl** automatically like Python. But you could do so using `arrange`, which brings us to our next verb operating on a grouped dataframe.
 
 #### Arrange
 
-**Base R ⇒ Tidy R: GOTCHA!** Grouped arrange ignores groups:
+Let's sort `mtcars` according to **disp** for each **cyl**.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+We can use the `apply` in Python to sort by supplying a lambda function:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl.apply(lambda x: x.sort_values(by='disp', ascending=False))
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+For R, things are much easier! We simply pipe the grouped data to our `arrange` verb and use `desc` to sort:
 
 ```{r group_by-arrange-nogroup, echo=TRUE, exercise=TRUE, exercise.lines=3}
 by_cyl %>% arrange(desc(disp))
 ```
 
-unless you specifically ask:
+Wait a minute. It looks like **cyl** also got sorted by descending order! We'd like to keep **cyl** stay in the natural 4, 6, 8 cylinders group order.
+
+**Base R ⇒ Tidy R: GOTCHA!** Grouped arrange ignores groups by default. Note how the **cyl** also gets sorted when we just want to sort by **disp**.
+
+To fix this, you specifically ask to sort by group by setting the `.by_group` to `TRUE`:
 
 ```{r group_by-arrange-group, echo=TRUE, exercise=TRUE, exercise.lines=3}
 by_cyl %>% arrange(desc(wt), .by_group = TRUE)
@@ -166,14 +199,36 @@ by_cyl %>% arrange(desc(wt), .by_group = TRUE)
 
 #### Mutate
 
-```{r group_by-mutate-simple, echo=TRUE, exercise=TRUE, exercise.lines=3}
-by_cyl %>% mutate(rank = min_rank(desc(mpg)))
+The very last `group_by` + verb interaction we will look at is for `mutate`. To demonstrate this interaction, we'll do a rather silly example, but should be good enough to show the difference between Python and R. Let's create a new column `rank` that represents the rank of **mpg** for each group of **cyl**.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python we actually can't add a new column to a `GroupBy` but what we can do is use `apply` where the lambda function sorts according to **mpg** in descending order. Finally, there is a function called `rank` which we can use to rank the cars in each **cyl** group:
+
+```{python echo=TRUE, eval=TRUE}
+by_cyl.apply(lambda x: x.sort_values(by='mpg', ascending=False))
 ```
 
-Remember how we can use `mutate` to overwrite columns? Let's try doing that for our grouping variable **mpg** by executing the following.
+<img src="../images/r_logo.png" class="language-icon">
+
+Unlike Python, R *does* allow us to add a new column to the grouped dataframe using `mutate` so we can pipe the grouped dataframe right to `mutate` to first create the **rank** column. Then we can use another handy function from `dplyr` called `min_rank` which ranks the **mpg** column.
+
+```{r group_by-mutate-simple, echo=TRUE, exercise=TRUE, exercise.lines=3}
+by_cyl %>% 
+  mutate(rank = min_rank(desc(mpg)))
+```
+then we can order by group:
+
+```{r group_by-mutate-simple-arranged, echo=TRUE, exercise=TRUE, exercise.lines=5}
+by_cyl %>% 
+  mutate(rank = min_rank(desc(mpg))) %>%
+  arrange(rank, .by_group=TRUE)
+```
+
+You need to be careful when using `mutate` to overwrite columns. Let's try doing that for our grouping variable **cyl** by executing the following.
 
 ```{r group_by-mutate-bad, echo=TRUE, exercise=TRUE, exercise.lines=3}
-by_cyl %>% mutate(gdf, cyl = cyl * 100)
+by_cyl %>% mutate(gdf, cyl = cyl * 2)
 ```
 
 **GOTCHA!** When you group variables with `group_by`, you can't overwrite the grouping variables using `mutate`! You should've seen this error:
@@ -184,13 +239,15 @@ Error : Column `cyl` can't be modified because it's a grouping variable
 
 Let's finish off this lesson by making it easier to examine the ranking of our **cyl** groups by doing a few things:
 
-- First, let's use `mutate` again to do the ranking as before
-- Then, move the **rank** column up to the front
+- Move the **rank** column up to the front
 - Finally `arrange` the rows by rank.
 
 **Note**: You don't need to preserve row names and you can print the whole resulting dataframe.
 
 ```{r group_by-mutate-chained-exercise, echo=TRUE, exercise=TRUE, exercise.lines=6}
+by_cyl %>% 
+  mutate(rank = min_rank(desc(mpg)))
+
 
 ```
 
@@ -200,6 +257,12 @@ Let's finish off this lesson by making it easier to examine the ranking of our *
 
 ```{r group_by-mutate-chained-exercise-hint-2}
 "Don't forget about that gotcha on `arrange`!"
+```
+```{r group_by-mutate-chained-exercise-hint-3}
+by_cyl %>% 
+  mutate(rank = min_rank(desc(mpg))) %>% 
+  select(...) %>% 
+  arrange(...)
 ```
 
 ```{r group_by-mutate-chained-exercise-check}
@@ -215,11 +278,7 @@ grade_result(
 )
 ```
 
-Once you've done that we can now clearly see the rows ordered according to the rank which is in turn based on **mpg** for each **cyl** groups 4, 6, and 8.
+Once you've done that we can clearly see the rows ordered according to the rank which is in turn based on **mpg** for each **cyl** groups 4, 6, and 8.
 
-Now we're talking! For most data operations, we will be using groups of variables, so `group_by` will help us set up the right dataframe for performing statistics on the data.
-
-#### If you want to learn more:
-
-There are more advanced things you can do with `group_by`. For example, we didn't cover some of the variantes of `group_by` like . Check out the [docs](https://dplyr.tidyverse.org/reference/group_by.html) for detail.
+For most data operations, we operate on groups of variables, so `group_by` is an important addition to our arsenal! This will now set us up for performing basic statistics on the data on the next topic with a new verb called `summarise`.
 

@@ -164,11 +164,9 @@ Now, let's combine all of our previous knowledge and put those skills to test!
 ```
 
 ```{r tidy-mutate-drop-exercise-hint-4}
-"If you're having difficulty putting chained calls in one line, break up by placing each verb in a new line and indenting them like so:"
-
 mtcars %>%
-  verb1(...) %>%
-  verb2(...) %>%
+  mutate(...) %>%
+  select(...) %>%
 ```
 
 ```{r tidy-mutate-drop-exercise-check}
@@ -195,3 +193,11 @@ You're really getting the hang of this and the tidyverse way of programming in R
 
 There are more advanced things you can do with `mutate` and there is another related verb called `transmute` which we didn't cover (it's like `mutate` but drops other columns). Check out the [docs](https://dplyr.tidyverse.org/reference/mutate.html) for detail.
 
+```{r include=FALSE}
+mtcars$cyl2 <- NULL
+mtcars$cyl4 <- NULL
+```
+
+```{python include=FALSE}
+mtcars = r.mtcars
+```
