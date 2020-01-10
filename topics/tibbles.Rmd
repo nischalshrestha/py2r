@@ -1,0 +1,120 @@
+---
+title: "slice"
+output: html_document
+---
+
+## `tibble`
+
+The tidverse features a new simpler version of the `data.frame` in R called a `tibble`. We will cover some important differences between the base R dataframe and the tibble in this topic. This will also help you understand some behavioral differences for the next few topics on the `dplyr` verbs.
+
+Let's go through various operations on **mtcars**.
+
+### What is a `tibble`?
+
+A `tibble` is basically just a dataframe that is much more simple and avoids some of the trappings we covered in the "Indexing rows and columns" topic such as partial name matching and dropping dimensions.
+
+Let's start by converting our `mtcars` into a tibble.
+
+```{r tibble-declaration, exercise=TRUE, echo=TRUE}
+mtcars_tbl <- as_tibble(mtcars)
+mtcars_tbl
+
+
+```
+```{r include=FALSE, context="data"}
+mtcars_tbl <- as_tibble(mtcars)
+```
+
+You might have noticed something different for both outputs compared to Python. Where are the rownames?!
+
+**Base R ⇒ Tidy R GOTCHA!** tibbles do not use `row.names()`, which means converting from a `data.frame` object will silently drop its rownames.
+
+The reason behind this is a deeper principle of 'tidy data' which treats data as consisting of `variables` and `observations`. Variables are what you know as columns, while observations are rows (see Hadley Wickham's [paper](https://vita.had.co.nz/papers/tidy-data.html). Base R creates a special column just for the row indices, which violates the tidy data principle so everything in the `tidyverse` world ignores them.
+
+However, in some cases row names might be important for datasets like `mtcars` where the car make and model could be nice to see. We can preserve them using the `rownames_to_column` function in the `tibble` package before converting the dataframe to a tibble:
+
+```{r tibble, echo=TRUE, exercise=TRUE, exercise.lines = 4}
+mtcars_tbl <- as_tibble(rownames_to_column(mtcars))
+mtcars_tbl
+
+```
+
+```{r include=FALSE, context="data"}
+mtcars_tbl <- as_tibble(rownames_to_column(mtcars))
+
+```
+
+Row names are back!
+
+### Indexing column(s)
+
+Tibbles behave the same as data.frame when using `[[`:
+
+```{r tibble-subsetting-single, exercise=TRUE, exercise.lines = 4}
+mtcars[['mpg']]
+mtcars_tbl[['mpg']]
+
+```
+
+the behavior is also the same when using `$`:
+
+```{r tibble-subsetting-single-dollar, exercise=TRUE, exercise.lines = 4}
+mtcars$mpg
+mtcars_tbl$mpg
+
+```
+
+However, tibbles are a lot more strict and do not allow partial column name matching:
+
+```{r tibble-subsetting-single-dollar-nopartial, exercise=TRUE, exercise.lines = 4}
+mtcars$cy
+mtcars_tbl$cy
+
+```
+While the base R on the first line executes successfully, the second line with the tibble version does not printing an error:
+```
+Unknown or uninitialised column: 'cy'.NULL
+```
+
+The tibble behavior is a lot like Python now, which should ease you a bit more. 
+
+There are no differences between dataframes and tibbles when indexing multiple columns:
+```{r tibble-subsetting-columns-1, exercise=TRUE, exercise.lines = 4}
+mtcars[c('mpg','cyl')]
+mtcars_tbl[c('mpg','cyl')]
+
+```
+Well, except with the slight incovenience of having to explicitly select for the `rownames` column for a tibble:
+```{r tibble-subsetting-columns-2, exercise=TRUE, exercise.lines = 4}
+mtcars[c('mpg','cyl')]
+mtcars_tbl[c('rowname','mpg','cyl')]
+
+```
+
+### Indexing rows and columns
+
+Another added consistency is that operations on tibbles will always return a tibble.
+
+For example, subsetting using the `data[row_indices, col_indices]` form will no longer drop dimensions. We can explicitly check that the returned object is still a tibble by using the `is_tibble` function:
+
+```{r tibble-subsetting-1, exercise=TRUE, exercise.lines = 4}
+mtcars_tbl[, 'mpg']
+is_tibble(mtcars_tbl[, 'mpg'])
+
+```
+
+The same holds true when we index a single column and some rows:
+
+```{r tibble-subsetting-2, exercise=TRUE, exercise.lines = 3}
+mtcars_tbl[1:2, c('mpg')]
+is_tibble(mtcars_tbl[1:2, c('mpg')])
+
+```
+We still get back a tibble.
+
+From here on out, we will use the term 'dataframe' because that is much more familiar to a Python programmer than a 'tibble'. But keep in mind that the verbs that we will learn about next will act on dataframes and sometimes convert them to tibbles to keep with the tidy data principle.
+
+#### If you want to learn more:
+
+There are other differences we do not cover for the scope of this document. You can dig into the [vignette](https://tibble.tidyverse.org/articles/tibble.html) for further details.
+

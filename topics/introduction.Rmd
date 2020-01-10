@@ -11,7 +11,7 @@ This is a short guide for Python programmers on handling dataframes in R. This d
 
 ### What am I going to learn?
 
-This guide is made up of 11 topics around dataframe manipulation. We begin with the basics of R dataframes with base R---what you get from the R without additional packages. Then, we spend a large portion covering a new style of programming called tidy R, introduced by the [tidyverse](https://www.tidyverse.org) packages. Tidy R is a style that provides some usability improvements to base R.
+This guide is made up of 12 topics around dataframe manipulation. We begin with the basics of R dataframes with base R---what you get from the R without additional packages. Then, we spend a large portion covering a new style of programming called tidy R, introduced by the [tidyverse](https://www.tidyverse.org) packages. Tidy R is a style that provides some usability improvements to base R.
 
 ### How am I going to learn?
 

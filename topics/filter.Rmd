@@ -72,7 +72,7 @@ Depending on what you tried, you may have run into some confusion about all of i
 
 ### Multiple conditions
 
-What if we want to apply multiple conditions? Let's say we're looking to buy one of those cars in mtacrs dataset and we want cars such that their **mpg** is greater than 20 and there are 6 *cyl* or cylinders.
+What if we want to apply multiple conditions? Let's say we're looking to buy one of those cars in mtacrs dataset and we want cars such that their **mpg** is greater than 20 and there are 6 **cyl** or cylinders.
 
 <img src="../images/python_logo.png" class="language-icon">
 
@@ -96,17 +96,22 @@ The difference is that the conditions don't need to be quoted. `filter` also all
 filter(mtcars, mpg > 20, cyl == 6)
 ```
 
-**Base R ⇒ Tidy R GOTCHA!** You might have noticed something different for both outputs compared to Python. Where are the rownames?!
+**Base R ⇒ Tidy R GOTCHA!** Tidy R verbs operating on a dataframe will silently drop the rownames as mentioned in the `tibble` topic.
 
-The one small downside of `filter` and some other verbs is that rownames can be silently dropped. Often times, this doesn't matter for analysis. 
+This a small downside of `filter` and some other verbs is that rownames can be silently dropped. Often times, this doesn't matter for analysis. 
 
-However, we have a way to preserve the names using the `rownames_to_column` function from the `tibble` package within the `tidyverse` package. If you imported `tidyverse` there is no need to import it. 
+However, we have a way to preserve the names using the `rownames_to_column` function from the `tibble` package within the `tidyverse` package.
 
 Fix the code below by calling `rownames_to_column` to our data in the first argument:
 
 ```{r filter-exercise, exercise=TRUE, exercise.lines = 3}
 filter(mtcars, mpg > 20, cyl == 6)
+
 ```
+```{r filter-exercise-hint}
+"Go back to the tibble topic if you forgot how to use rownames_to_column."
+```
+
 
 ```{r filter-exercise-check}
 grade_result(

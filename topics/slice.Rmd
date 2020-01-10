@@ -58,4 +58,16 @@ Here's where our first tidy verb `slice` comes in handy, which behaves as you'd 
 slice(df, start:end)
 ```
 
+One thing to keep in mind is that if you were to convert a dataframe into a tibble, it doesn't mean that vector recycling disappears. 
+
+Here's an explicit conversion and execution of the above example using `[`:
+
+```{r tibble-slice, exercise=TRUE, exercise.lines = 3}
+df_tbl <- as_tibble(df)
+df_tbl[1:10, ]
+
+```
+
+Note how we still get the appended `NA` rows.
+
 Sadly, our story does not end here with `[`. Let's explore other problems in the next topic.

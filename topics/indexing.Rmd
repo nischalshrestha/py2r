@@ -64,6 +64,60 @@ grade_result(
 )
 ```
 
+### Partial column name matching
+
+What if we don't completely write out the column name when referencing? Let's try doing something strange, like reference a column **cy** which doesn't exist in `mtcars`.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python:
+
+```{python echo=TRUE, eval=FALSE}
+mtcars.cy
+```
+```
+AttributeError: 'DataFrame' object has no attribute 'cy'
+```
+
+As expected, we get a `AttributeError` because the column does not exist. This syntax also throws an error, this time a `KeyError`:
+
+```{python echo=TRUE, eval=FALSE}
+mtcars['cy']
+```
+```
+KeyError: 'cy'
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+Let's try the same thing in R. First with `$`:
+
+```{r dollar-gotcha, exercise = TRUE, exercise.lines = 3}
+mtcars$cy
+
+```
+
+Wait what?! No errors!
+
+**Python ⇒ R GOTCHA!** Instead of throwing an error like in Python, when given a partial column name, R will attempt to find the column with the substring and return that column.
+
+In the above code, the `$cy` returned the **cyl** column because of the partial match. Try executing this code as well if you're still unconvinced:
+
+```{r dollar-gotcha-1, exercise = TRUE, exercise.lines = 3}
+mtcars$ca
+
+```
+This time, the `$ca` matches up with the **carb** column. 
+
+However, if given just a 'c', then R has no clue which column you want:
+```{r dollar-gotcha-2, exercise = TRUE, exercise.lines = 3}
+mtcars$c
+
+```
+But this still doesn't result in an error. Instead R returns `NULL` to signify the column doesn't exist.
+
+This behavior won't matter as much when we transition to a new style of R programming ("Enter Tidy" and later topics). However, it's worth pointing out here so you will be familiar with it when we revisit this issue later.
+
 ### Index a single element
 
 Suppose we want to reference the fifth element of the **mpg** column.
