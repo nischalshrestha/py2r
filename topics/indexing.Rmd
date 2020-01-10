@@ -149,6 +149,62 @@ grade_result(
 )
 ```
 
+### Dropped Dimensions when selecting one column
+
+Let's examine what happens when we only want to subset a single column, say **mpg**.
+
+<img src="../images/python_logo.png" class="language-icon">
+
+No surprises here for Python:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars[['mpg']]
+```
+
+The returned object is a `DataFrame`:
+
+```{python echo=TRUE, eval=TRUE}
+type(mtcars[['mpg']])
+```
+
+which means we can still subset it further using **mpg**:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars[['mpg']].mpg.head()
+```
+
+<img src="../images/r_logo.png" class="language-icon">
+
+This is the equivalent in R: 
+
+```{r rows-column-dropped, exercise=TRUE, exercise.lines=3}
+mtcars[['mpg']]
+```
+
+Now execute this code to look at the returned type:
+
+```{r rows-column-dropped-dim, exercise=TRUE, exercise.lines=3}
+typeof(mtcars[['mpg']])
+```
+This one is more surprising! The object that gets returned is actually a `double` vector.
+
+**Python ⇒ R GOTCHA!** Unlike Python, subsetting a single column using `[[` returns a vector not a dataframe. R will drop the dataframe dimension and return a vector instead.
+
+To fix this, we could use the alternate syntax where we just access the column using either `$` or `[`:
+```{r rows-column-dropped-fix-attempt-alt-1, exercise=TRUE, exercise.lines=3}
+mtcars['mpg']
+typeof(mtcars['mpg'])
+```
+
+or with a list using `c()`:
+
+```{r rows-column-dropped-fix-attempt-alt-2, exercise=TRUE, exercise.lines=3}
+mtcars[c('mpg')]
+typeof(mtcars[c('mpg')])
+```
+
+This also gives back a dataframe which is a `list` in R.
+
 ### Indexing rows
 
 <!-- TODO: -->
@@ -253,5 +309,62 @@ grade_result(
 )
 ```
 
-You made it across the field! Now, on to bigger things.
+### Dropped dimension when indexing rows and columns
+
+What if we subsetted the column `mpg` and the first two rows using the `data[row_indices, col_indices]` form and wanted a dataframe as a result?
+
+<img src="../images/python_logo.png" class="language-icon">
+
+In Python, we can use the `.iloc` which requires putting the index of **mpg** (0) in a list on the column side:
+
+```{python echo=TRUE, eval=TRUE}
+mtcars.iloc[0:2, [0]]
+```
+
+The returned object is a `DataFrame`:
+
+```{python echo=TRUE, eval=TRUE}
+type(mtcars.iloc[0:2, [0]])
+```
+
+which means we can still subset it further using **mpg**:
+
+```{python echo=TRUE, eval=TRUE}
+type(mtcars.iloc[0:2, [0]].mpg)
+```
+This gives back a `Series` since we're selecting the column from the `DataFrame`.
+
+<img src="../images/r_logo.png" class="language-icon">
+
+Here's the R equivalent using `c()` for creating a list with **mpg**:
+
+```{r rows-column-dropped-single, exercise=TRUE, exercise.lines=3}
+mtcars[1:2, c('mpg')]
+typeof(mtcars[1:2, c('mpg')])
+```
+
+The values returned are fine, but we got a `double` vector instead of a dataframe! 
+
+**Python ⇒ R GOTCHA!** Unlike Python, subsetting a single row and column using `[` returns a vector not a dataframe. R will drop the dataframe dimension and return a vector instead.
+
+This is similar to the selecting a single column using `[[` issue from earlier. 
+
+To fix this, we would have to instead supply an additional parameter `drop` and setting it to `FALSE`:
+
+```{r rows-column-dropped-single-fix, exercise=TRUE, exercise.lines=3}
+mtcars[1:2, 'mpg', drop=FALSE]
+typeof(mtcars[, 'mpg', drop=FALSE])
+```
+
+Now we get a dataframe back which is just a `list` in R.
+
+Now, we can still subset this further using **mpg**:
+
+```{r rows-column-dropped-single-fix-subset, exercise=TRUE, exercise.lines=3}
+mtcars[1:2, 'mpg', drop=FALSE]$mpg
+typeof(mtcars[1:2, 'mpg', drop=FALSE]$mpg)
+```
+And this is a vector as expected.
+
+Congrats! You made it across the field! Now, on to bigger things.
 
