@@ -11,7 +11,7 @@ mtcars = r.mtcars
 
 ## Inspecting data
 
-Before learning anything, we might as well learn how to take a peek into dataframes. So, let's go over how to inspect a dataframe such as *mtcars*:
+Before learning about subsetting and transforming dataframes, let’s look at how to inspect dataframes such as *mtcars*:
 
 ```{r}
 head(mtcars) %>% kable()
@@ -21,7 +21,7 @@ head(mtcars) %>% kable()
 
 <img src="../images/python_logo.png" class="language-icon">
 
-You are used to printing the first few rows using `head()`
+You are probably used to printing the first few rows using `head()`
 
 ```{python echo=TRUE}
 mtcars.head()
@@ -49,7 +49,7 @@ grade_result(
 
 <img src="../images/python_logo.png" class="language-icon">
 
-You are used to printing the last few rows using `tail()`.
+You are probably used to printing the last few rows using `tail()`.
 
 ```{python echo = TRUE, eval = FALSE}
 mtcars.tail()

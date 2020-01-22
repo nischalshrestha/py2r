@@ -13,7 +13,7 @@ Let's try to index the column **mpg** column from mtcars.
 
 <img src="../images/python_logo.png" class="language-icon">
 
-You are used to indexing a column using either `[` or dot notation:
+In Python, you select or subset a column using either `[` or dot notation:
 
 ```{python echo=TRUE, eval=FALSE}
 mtcars['mpg'].head()
@@ -28,7 +28,7 @@ print(mtcars['mpg'])
 
 <img src="../images/r_logo.png" class="language-icon">
 
-You can use the `[` as well. Try it out now by referencing the **mpg** column:
+Like Python, you can use the `[` in R to subset a column. Try it out now by referencing the **mpg** column:
 
 ```{r column, exercise = TRUE, exercise.lines = 3}
 
