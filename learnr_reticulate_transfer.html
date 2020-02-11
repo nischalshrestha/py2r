@@ -138,7 +138,7 @@ $(document).ready(function () {
 </div>
 <div id="section-inspecting-data" class="section level2">
 <h2>Inspecting data</h2>
-<p>Before learning anything, we might as well learn how to take a peek into dataframes. So, let’s go over how to inspect a dataframe such as <em>mtcars</em>:</p>
+<p>Before learning about subsetting and transforming dataframes, let’s look at how to inspect dataframes such as <em>mtcars</em>:</p>
 <table>
 <thead>
 <tr class="header">
@@ -246,7 +246,7 @@ $(document).ready(function () {
 <div id="section-print-the-first-few-rows" class="section level3">
 <h3>Print the first few rows</h3>
 <p><img src="../images/python_logo.png" class="language-icon"></p>
-<p>You are used to printing the first few rows using <code>head()</code></p>
+<p>You are probably used to printing the first few rows using <code>head()</code></p>
 <pre class="python"><code>mtcars.head()</code></pre>
 <pre><code>                    mpg  cyl   disp     hp  drat  ...   qsec   vs   am  gear  carb
 Mazda RX4          21.0  6.0  160.0  110.0  3.90  ...  16.46  0.0  1.0   4.0   4.0
@@ -273,7 +273,7 @@ Hornet Sportabout  18.7  8.0  360.0  175.0  3.15  ...  17.02  0.0  0.0   3.0   2
 <div id="section-print-the-last-few-rows" class="section level3">
 <h3>Print the last few rows</h3>
 <p><img src="../images/python_logo.png" class="language-icon"></p>
-<p>You are used to printing the last few rows using <code>tail()</code>.</p>
+<p>You are probably used to printing the last few rows using <code>tail()</code>.</p>
 <pre class="python"><code>mtcars.tail()</code></pre>
 <pre><code>                 mpg  cyl   disp     hp  drat  ...  qsec   vs   am  gear  carb
 Lotus Europa    30.4  4.0   95.1  113.0  3.77  ...  16.9  1.0  1.0   5.0   2.0
@@ -303,7 +303,7 @@ Volvo 142E      21.4  4.0  121.0  109.0  4.11  ...  18.6  1.0  1.0   4.0   2.0
 <h3>Index column</h3>
 <p>Let’s try to index the column <strong>mpg</strong> column from mtcars.</p>
 <p><img src="../images/python_logo.png" class="language-icon"></p>
-<p>You are used to indexing a column using either <code>[</code> or dot notation:</p>
+<p>In Python, you select or subset a column using either <code>[</code> or dot notation:</p>
 <pre class="python"><code>mtcars[&#39;mpg&#39;].head()</code></pre>
 <pre class="python"><code>mtcars[&#39;mpg&#39;]</code></pre>
 <pre><code>Mazda RX4              21.0
@@ -340,7 +340,7 @@ Maserati Bora          15.0
 Volvo 142E             21.4
 Name: mpg, dtype: float64</code></pre>
 <p><img src="../images/r_logo.png" class="language-icon"></p>
-<p>You can use the <code>[</code> as well. Try it out now by referencing the <strong>mpg</strong> column:</p>
+<p>Like Python, you can use the <code>[</code> in R to subset a column. Try it out now by referencing the <strong>mpg</strong> column:</p>
 <div class="tutorial-exercise" data-label="column" data-caption="Code" data-completion="0" data-diagnostics="1" data-startover="1" data-lines="3">
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.timelimit":60,"exercise.checker":["function (label = NULL, solution_code = NULL, user_code = NULL, ","    check_code = NULL, envir_result = NULL, evaluate_result = NULL, ","    envir_prep = NULL, last_value = NULL, ...) ","{","    if (is.null(user_code)) {","        return(list(message = \"I didn't receive your code. Did you write any?\", ","            correct = FALSE, type = \"error\", location = \"append\"))","    }","    else {","        user_code <- parse(text = user_code)","        if (length(user_code) == 0) {","            return(list(message = \"I didn't receive your code. Did you write any?\", ","                correct = FALSE, type = \"error\", location = \"append\"))","        }","    }","    if (!is.null(solution_code)) {","        solution_code <- parse(text = solution_code)","        if (length(solution_code) == 0) {","            return(list(message = \"No solution is provided for this exercise.\", ","                correct = TRUE, type = \"info\", location = \"append\"))","        }","    }","    had_error_checking <- FALSE","    checked_result <- tryCatch({","        parsed_check_code <- parse(text = check_code)","        if (length(parsed_check_code) > 1) {","            for (i in 1:(length(parsed_check_code) - 1)) {","                eval(parsed_check_code[[i]], envir_prep)","            }","        }","        grading_code <- rlang::call_standardise(parsed_check_code[[length(parsed_check_code)]], ","            envir_prep)","        grader_args <- list(user_quo = rlang::as_quosure(user_code[[length(user_code)]], ","            envir_result))","        if (!is.null(solution_code)) {","            grader_args$solution_quo <- rlang::as_quosure(solution_code[[length(solution_code)]], ","                envir_prep)","        }","        learnr_args <- list(...)","        learnr_args$label <- label","        learnr_args$solution_code <- solution_code","        learnr_args$user_code <- user_code","        learnr_args$check_code <- check_code","        learnr_args$envir_result <- envir_result","        learnr_args$evaluate_result <- evaluate_result","        learnr_args$envir_prep <- envir_prep","        learnr_args$last_value <- last_value","        grading_code$grader_args <- grader_args","        grading_code$learnr_args <- learnr_args","        envir_prep$ans <- grader_args$user","        eval(grading_code, envir_prep)","    }, error = function(e) {","        message(\"\", e)","        had_error_checking <<- TRUE","        graded(correct = FALSE, message = \"Error occured while checking the submission\")","    })","    if (!checkmate::test_class(checked_result, \"grader_graded\")) {","        stop(\"`grade_learnr` should receive a `graded` value from every `-check` chunk\")","    }","    message_type <- if (had_error_checking) {","        \"warning\"","    }","    else {","        if (checked_result$correct) {","            \"success\"","        }","        else {","            \"error\"","        }","    }","    ret <- list(message = checked_result$message, correct = checked_result$correct, ","        type = message_type, location = \"append\")","    ret","}"]}</script>
 </div>
