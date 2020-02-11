@@ -6,7 +6,7 @@ You can run this locally in RStudio or view the tutorial here: https://nshrest.s
 
 # Motivation
 
-Data scientists have realized that the language war between Python and R for data science are fruitless. Instead, [a love story](https://rstudio.com/solutions/r-and-python/) has developed, where both languages can be used for various purposes, complementing each other's strengths and weaknesses. But how do we train programmers who are new to one or the other?
+Data scientists have realized that the language wars between Python and R for data science are fruitless. Instead, [a love story](https://rstudio.com/solutions/r-and-python/) has developed, where both languages can be used for various purposes, complementing each other's strengths and weaknesses. But how do we train programmers who are new to one or the other?
 
 # Interactive transfer lessons
 
