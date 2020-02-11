@@ -10,5 +10,5 @@ Data scientists have realized that the language wars between Python and R for da
 
 # Interactive transfer lessons
 
-This is my attempt to explore a new way to create interactive learning experiences for programmers who may switch from one language to another. The case study here is Python to R, and it only covers some basics on dataframe manipulations. I hope this at the very least can start a conversation among educators and professional programmers about how we teach languages using interactive documents.
+This tutorial is my attempt to explore a new way to create interactive learning experiences for programmers who may switch from one language to another. The case study here is Python to R, and it only covers some basics on dataframe manipulations. I hope that–at the very least–this style of tutorials can start a conversation among educators and professional programmers about how we teach languages using interactive documents.
 
