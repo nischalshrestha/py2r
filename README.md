@@ -1,6 +1,6 @@
 # py2r
 
-This is an example of an interactive transfer lesson for Python programmers switching to R using the lovely `learnr` [package](https://rstudio.github.io/learnr/index.html). It makes use of the `reticulate` [package](https://rstudio.github.io/reticulate/) to switch between Python and R code snippets. The `learnr` package is being used for the interactivity which now is scope to code execution exercises in R with basic checks in the backend.
+This is an example of an interactive transfer lesson for Python programmers switching to R using the lovely `learnr` [package](https://rstudio.github.io/learnr/index.html). It makes use of the `reticulate` [package](https://rstudio.github.io/reticulate/) to switch between Python and R code snippets. The `learnr` package is being used for the interactivity which is currently code execution exercises in R with basic checks in the backend.
 
 You can run this locally in RStudio or view the tutorial here: https://nshrest.shinyapps.io/py2r_transfer/
 
